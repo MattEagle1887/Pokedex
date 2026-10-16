@@ -7,7 +7,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <title>Pokédex Gen 1–3 & Quiz</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23fff' stroke='%23222' stroke-width='8'/%3E%3Cpath d='M 4 50 A 46 46 0 0 1 96 50 Z' fill='%23dc0a2d'/%3E%3Crect x='4' y='46' width='92' height='8' fill='%23222'/%3E%3Ccircle cx='50' cy='50' r='16' fill='%23fff' stroke='%23222' stroke-width='8'/%3E%3C/svg%3E">
   <style>
     :root {
       --pokedex-red: #dc0a2d;
@@ -455,7 +454,6 @@
     }
     .strip-thumb img { width: 30px; height: 30px; }
 
-    /* Schnell-Frage Menü (Fällt automatisch ein, wenn Mikrofon auf dem Tablet fehlt) */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -525,7 +523,7 @@
     <div class="nav-row">
       <button class="nav-btn" onclick="changePokemon(-1)">⬅️</button>
       <div class="poke-title">
-        <div class="poke-id-cat" id="poke-id">#001 • Lade...</div>
+        <div class="poke-id-cat" id="poke-id">#001 • Samen-Pokémon</div>
         <h1 class="poke-name" id="poke-name">Bisasam</h1>
       </div>
       <button class="nav-btn" onclick="changePokemon(1)">➡️</button>
@@ -619,7 +617,33 @@
     fairy:    { de: 'Fee',      emoji: '✨', color: '#D685AD', strong: ['fighting','dragon','dark'], weak: ['poison','steel'], immune: ['dragon'], resist: ['fighting','bug','dark'] }
   };
 
-  let pokemonList = [];
+  // Notfall-Basispaket für Gen 1 (sofort da, wartet nicht auf Online-API)
+  const OFFLINE_KANTO = [
+    [1,"Bisasam","Samen-Pokémon",["grass","poison"],0,1,"Es trägt von Geburt an einen Samen auf dem Rücken."],
+    [2,"Bisaknosp","Samen-Pokémon",["grass","poison"],1,1,"Wenn die Knospe duftet, blüht sie bald auf."],
+    [3,"Bisaflor","Samen-Pokémon",["grass","poison"],2,1,"Seine riesige Blüte tankt Sonnenlicht."],
+    [4,"Glumanda","Echsen-Pokémon",["fire"],0,2,"Die Flamme auf seinem Schweif zeigt seine Lebensenergie."],
+    [5,"Glutexo","Flammen-Pokémon",["fire"],4,2,"Im Kampf schwingt es seinen brennenden Schweif."],
+    [6,"Glurak","Flammen-Pokémon",["fire","flying"],5,2,"Sein Feueratem schmilzt sogar Felsen."],
+    [7,"Schiggy","Minikröten-Pokémon",["water"],0,3,"Bei Gefahr zieht es sich in seinen Panzer zurück."],
+    [8,"Schillok","Kröten-Pokémon",["water"],7,3,"Es steuert mit seinem buschigen Schweif im Wasser."],
+    [9,"Turtok","Panzertier-Pokémon",["water"],8,3,"Aus den Wasserkanonen schießt es unter Druck."],
+    [25,"Pikachu","Maus-Pokémon",["electric"],0,10,"In den Backentaschen speichert es Strom."]
+  ];
+
+  let pokemonList = OFFLINE_KANTO.map(item => ({
+    id: item[0],
+    name: item[1],
+    category: item[2],
+    types: item[3],
+    evolvesFrom: item[4],
+    chainId: item[5],
+    desc: item[6],
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item[0]}.png`,
+    thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item[0]}.png`,
+    cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${item[0]}.ogg`
+  }));
+
   let currentId = 1;
   let persona = 'dexter';
   let quizMode = false;
@@ -631,64 +655,36 @@
   let dexterSpeed = parseFloat(localStorage.getItem('pokedex_speed') || '1.25');
   let customPitch = parseFloat(localStorage.getItem('pokedex_pitch') || '0.85');
 
-  const GRAPHQL_386 = `
-  query {
-    pokemon_v2_pokemonspecies(where: {id: {_lte: 386}}, order_by: {id: asc}) {
-      id
-      evolves_from_species_id
-      evolution_chain_id
-      pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: 6}}) {
-        name
-        genus
-      }
-      pokemon_v2_pokemons(limit: 1) {
-        pokemon_v2_pokemontypes {
-          pokemon_v2_type { name }
-        }
-      }
-    }
-  }`;
-
+  // Lädt im Hintergrund die echten 386 Pokémon nach, falls online
   async function initPokedex() {
-    const cached = localStorage.getItem('pokedex_gen123_v2');
-    if (cached) {
-      try {
-        pokemonList = JSON.parse(cached);
-        if (pokemonList.length === 386) {
-          startApp();
-          return;
-        }
-      } catch (e) {}
-    }
-
-    document.getElementById('speech-bubble').innerText = 'Lade einmalig alle 386 Pokémon (Kanto, Johto & Hoenn)...';
+    startApp();
     try {
       const res = await fetch('https://beta.pokeapi.co/graphql/v1beta', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: GRAPHQL_386 })
+        body: JSON.stringify({ query: `query { pokemon_v2_pokemonspecies(where: {id: {_lte: 386}}, order_by: {id: asc}) { id evolves_from_species_id evolution_chain_id pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: 6}}) { name genus } pokemon_v2_pokemons(limit: 1) { pokemon_v2_pokemontypes { pokemon_v2_type { name } } } } }` })
       });
       const json = await res.json();
-      pokemonList = json.data.pokemon_v2_pokemonspecies.map(sp => {
-        const de = sp.pokemon_v2_pokemonspeciesnames[0] || {};
-        const types = sp.pokemon_v2_pokemons[0].pokemon_v2_pokemontypes.map(t => t.pokemon_v2_type.name);
-        return {
-          id: sp.id,
-          name: de.name || `Pokémon #${sp.id}`,
-          category: de.genus ? `${de.genus}` : 'Pokémon',
-          types: types,
-          evolvesFrom: sp.evolves_from_species_id || 0,
-          chainId: sp.evolution_chain_id,
-          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${sp.id}.png`,
-          thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${sp.id}.png`,
-          cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${sp.id}.ogg`
-        };
-      });
-      localStorage.setItem('pokedex_gen123_v2', JSON.stringify(pokemonList));
-      startApp();
-    } catch (err) {
-      document.getElementById('speech-bubble').innerText = 'Bitte kurz mit dem Internet verbinden, um die 386 Pokémon zu laden!';
-    }
+      if (json && json.data) {
+        pokemonList = json.data.pokemon_v2_pokemonspecies.map(sp => {
+          const de = sp.pokemon_v2_pokemonspeciesnames[0] || {};
+          const types = sp.pokemon_v2_pokemons[0].pokemon_v2_pokemontypes.map(t => t.pokemon_v2_type.name);
+          return {
+            id: sp.id,
+            name: de.name || `Pokémon #${sp.id}`,
+            category: de.genus ? `${de.genus}` : 'Pokémon',
+            types: types,
+            evolvesFrom: sp.evolves_from_species_id || 0,
+            chainId: sp.evolution_chain_id,
+            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${sp.id}.png`,
+            thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${sp.id}.png`,
+            cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${sp.id}.ogg`
+          };
+        });
+        renderStrip();
+        selectPokemon(currentId, false);
+      }
+    } catch (e) {}
   }
 
   function startApp() {
@@ -707,7 +703,8 @@
   function updateGenHighlight(id) {
     const g = id <= 151 ? 1 : (id <= 251 ? 2 : 3);
     document.querySelectorAll('.gen-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(`gen-${g}`).classList.add('active');
+    const btn = document.getElementById(`gen-${g}`);
+    if (btn) btn.classList.add('active');
   }
 
   function toggleMute() {
@@ -756,13 +753,9 @@
 
   function selectPokemon(id, autoSpeak = true) {
     if (pokemonList.length === 0) return;
-    if (id < 1) id = pokemonList.length;
-    if (id > pokemonList.length) id = 1;
-    currentId = id;
-    updateGenHighlight(id);
-
-    const p = pokemonList.find(x => x.id === id);
-    if (!p) return;
+    const p = pokemonList.find(x => x.id === id) || pokemonList[0];
+    currentId = p.id;
+    updateGenHighlight(currentId);
 
     const imgEl = document.getElementById('poke-img');
     imgEl.classList.remove('silhouette');
@@ -896,7 +889,7 @@
       quizGrid.appendChild(btn);
     });
 
-    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf oder sag mir den Namen!`;
+    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf!`;
     document.getElementById('speech-bubble').innerText = promptText;
     speakText(`Wer ist dieses Pokémon?`);
   }
@@ -937,10 +930,14 @@
   }
 
   function changePokemon(delta) {
+    const idx = pokemonList.findIndex(x => x.id === currentId);
+    let newIdx = idx + delta;
+    if (newIdx < 0) newIdx = pokemonList.length - 1;
+    if (newIdx >= pokemonList.length) newIdx = 0;
     if (quizMode) {
       startQuizRound();
     } else {
-      selectPokemon(currentId + delta, true);
+      selectPokemon(pokemonList[newIdx].id, true);
     }
   }
 
@@ -948,8 +945,8 @@
     if (quizMode) {
       startQuizRound();
     } else {
-      const randomId = Math.floor(Math.random() * pokemonList.length) + 1;
-      selectPokemon(randomId, true);
+      const rand = pokemonList[Math.floor(Math.random() * pokemonList.length)];
+      selectPokemon(rand.id, true);
     }
   }
 
@@ -1058,7 +1055,7 @@
     const p = pokemonList.find(x => x.id === currentId);
     if (!p) return;
     const text = buildExplanationText(p, focusType);
-    document.getElementById('speech-bubble'].innerText = text;
+    document.getElementById('speech-bubble').innerText = text;
     speakText(text);
   }
 
@@ -1069,50 +1066,11 @@
     if (!quizMode) speakFullInfo();
   }
 
-  // Abfang-Funktion für Geräte ohne Google-Spracherkennung (wie Fire Tablet)
+  // Öffnet direkt das Touch-Frage-Menü (perfekt für das Tablet ohne Google-Dienste)
   function startListening() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      // Automatischer Fallback für Tablets ohne Google-Dienste: Öffnet direkt das interaktive Schnellwahl-Fenster!
-      openQuickQueryModal();
-      return;
-    }
-
-    try {
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'de-DE';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 3;
-
-      const micBtn = document.getElementById('mic-btn');
-      const micLabel = document.getElementById('mic-label');
-
-      recognition.onstart = () => {
-        micBtn.classList.add('listening');
-        micLabel.innerText = 'Ich höre zu...';
-      };
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        handleVoiceQuery(transcript);
-      };
-
-      recognition.onerror = () => {
-        openQuickQueryModal();
-      };
-
-      recognition.onend = () => {
-        micBtn.classList.remove('listening');
-        micLabel.innerText = 'Frag den Pokédex!';
-      };
-
-      recognition.start();
-    } catch (e) {
-      openQuickQueryModal();
-    }
+    openQuickQueryModal();
   }
 
-  // Interaktives Schnell-Fragefenster für Touch-Bedienung auf dem Tablet
   function openQuickQueryModal() {
     const currentPoke = pokemonList.find(x => x.id === currentId) || { name: 'dieses Pokémon' };
     let modal = document.getElementById('quick-query-modal');
@@ -1123,7 +1081,7 @@
       modal.style.display = 'flex';
       modal.innerHTML = `
         <div class="modal-box" style="text-align:center;">
-          <h3 style="color:#dc0a2d; margin-top:0;">🎯 Was möchtest du über ${currentPoke.name} wissen?</h3>
+          <h3 style="color:#dc0a2d; margin-top:0;" id="quick-modal-title">🎯 Was möchtest du wissen?</h3>
           <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
             <button class="btn-primary" style="background:#339af0; padding:12px; font-size:1rem;" onclick="quickAsk('type')">⭐ Welcher Typ ist das?</button>
             <button class="btn-primary" style="background:#20c997; padding:12px; font-size:1rem;" onclick="quickAsk('strong')">💪 Gegen wen ist es stark?</button>
@@ -1135,7 +1093,7 @@
       `;
       document.body.appendChild(modal);
     } else {
-      modal.querySelector('h3').innerText = `🎯 Was möchtest du über ${currentPoke.name} wissen?`;
+      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du wissen über ${currentPoke.name}?`;
       modal.style.display = 'flex';
     }
   }
@@ -1143,57 +1101,6 @@
   function quickAsk(focusType) {
     document.getElementById('quick-query-modal').style.display = 'none';
     speakFocus(focusType);
-  }
-
-  function handleVoiceQuery(query) {
-    if (query.includes('stopp') || query.includes('leise') || query.includes('ruhe')) {
-      stopAllSpeech();
-      return;
-    }
-    if (query.includes('quiz') || query.includes('ratespiel')) {
-      if (!quizMode) toggleQuizMode();
-      return;
-    }
-    if (query.includes('schluss') || query.includes('beenden')) {
-      if (quizMode) toggleQuizMode();
-      return;
-    }
-
-    let matchedPokemon = null;
-    for (const p of pokemonList) {
-      const clean = p.name.toLowerCase().replace('♀', '').replace('♂', '');
-      if (query.includes(clean)) {
-        matchedPokemon = p;
-        break;
-      }
-    }
-
-    if (quizMode && !quizRevealed) {
-      if (matchedPokemon && matchedPokemon.id === currentId) {
-        checkQuizAnswer(currentId, null);
-      } else {
-        speakText(`Noch nicht ganz!`);
-      }
-      return;
-    }
-
-    const target = matchedPokemon || pokemonList.find(x => x.id === currentId);
-    let focus = 'all';
-    if (query.includes('stark')) focus = 'strong';
-    else if (query.includes('schwach') || query.includes('vorsicht')) focus = 'weak';
-    else if (query.includes('entwickel')) focus = 'evo';
-    else if (query.includes('typ')) focus = 'type';
-
-    if (matchedPokemon) {
-      selectPokemon(matchedPokemon.id, false);
-      const txt = buildExplanationText(matchedPokemon, focus);
-      document.getElementById('speech-bubble').innerText = txt;
-      speakText(txt);
-    } else if (focus !== 'all' && target) {
-      const txt = buildExplanationText(target, focus);
-      document.getElementById('speech-bubble').innerText = txt;
-      speakText(txt);
-    }
   }
 
   function populateVoiceDropdown() {
