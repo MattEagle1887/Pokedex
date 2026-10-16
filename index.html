@@ -2,12 +2,19 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#dc0a2d">
-  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pokédex">
   <title>Pokédex Gen 1–3 & Quiz</title>
+
+  <!-- Platzhalter-Icons & Manifest (werden beim Start automatisch als echtes 512x512 PNG für Android Chrome generiert!) -->
+  <link rel="icon" id="dynamic-favicon" type="image/png">
+  <link rel="apple-touch-icon" id="dynamic-apple-icon">
+  <link rel="manifest" id="dynamic-manifest">
+
   <style>
     :root {
       --pokedex-red: #dc0a2d;
@@ -20,19 +27,24 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--pokedex-red);
       color: #1c1c1e;
+      overflow: hidden;
+    }
+    body {
       display: flex;
       flex-direction: column;
       height: 100vh;
       height: 100dvh;
-      overflow: hidden;
     }
 
+    /* Oberer Pokédex-Rahmen */
     header {
       display: flex;
       align-items: center;
@@ -41,10 +53,13 @@
       border-bottom: 3px solid var(--pokedex-dark);
       box-shadow: 0 2px 6px rgba(0,0,0,0.28);
       z-index: 10;
-      gap: 5px;
+      gap: 6px;
       overflow-x: auto;
       flex-shrink: 0;
+      scrollbar-width: none;
     }
+    header::-webkit-scrollbar { display: none; }
+
     .sensor-light {
       width: 26px;
       height: 26px;
@@ -52,37 +67,41 @@
       background: radial-gradient(circle at 30% 30%, #b8e2ff, var(--blue-light), #004b76);
       border: 2px solid #fff;
       flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(0,0,0,0.35);
     }
     .sensor-light.speaking {
       animation: pulseLight 0.28s infinite alternate;
     }
     @keyframes pulseLight {
       from { box-shadow: 0 0 6px #fff; transform: scale(1); }
-      to { box-shadow: 0 0 15px #00ffff; transform: scale(1.1); }
+      to { box-shadow: 0 0 16px #00ffff; transform: scale(1.1); }
     }
 
+    /* Generationen-Buttons (#1 Kanto, #2 Johto, #3 Hoenn) */
     .gen-bar {
       display: flex;
-      gap: 3px;
-      background: rgba(0,0,0,0.3);
-      padding: 2px;
+      gap: 4px;
+      background: rgba(0,0,0,0.28);
+      padding: 3px;
       border-radius: 10px;
       flex-shrink: 0;
     }
     .gen-btn {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.45);
       color: #fff;
       font-weight: 900;
-      font-size: 0.7rem;
-      padding: 4px 6px;
-      border-radius: 8px;
+      font-size: 0.74rem;
+      padding: 5px 8px;
+      border-radius: 7px;
       cursor: pointer;
+      white-space: nowrap;
     }
     .gen-btn.active {
       background: #ffcc00;
       color: #111;
       border-color: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
     }
 
     .header-controls {
@@ -93,33 +112,57 @@
       flex-shrink: 0;
     }
 
+    /* Prominenter Quiz-Button links neben dem Lautsprecher */
     .quiz-pill-btn {
       background: linear-gradient(135deg, #3b5bdb, #4c6ef5);
       border: 2px solid #fff;
       color: #fff;
       font-weight: 900;
-      font-size: 0.82rem;
-      padding: 5px 10px;
+      font-size: 0.8rem;
+      padding: 4px 10px;
       border-radius: 14px;
       cursor: pointer;
       display: flex;
-      align-items: center;
-      gap: 3px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+      align-items: baseline;
+      gap: 2px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.28);
       flex-shrink: 0;
+      white-space: nowrap;
     }
     .quiz-pill-btn.quiz-active {
       background: linear-gradient(135deg, #e03131, #f03e3e);
+      align-items: center;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: rgba(0,0,0,0.3);
+      border-radius: 14px;
+      padding: 2px;
+    }
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.85);
+      font-weight: 800;
+      font-size: 0.74rem;
+      padding: 3px 6px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .mode-btn.active {
+      background: #fff;
+      color: #111;
     }
 
     .icon-top-btn {
       background: rgba(0,0,0,0.28);
-      border: 2px solid rgba(255,255,255,0.5);
+      border: 2px solid rgba(255,255,255,0.55);
       color: #fff;
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -127,8 +170,25 @@
       flex-shrink: 0;
     }
 
+    /* Direkt-Installieren-Button (Erscheint automatisch, wenn Chrome die App-Installation bereitstellt) */
+    #install-app-btn {
+      display: none;
+      background: #4cd964;
+      color: #111;
+      border: 2px solid #fff;
+      font-weight: 900;
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    }
+
+    /* Hauptbildschirm */
     main {
       flex: 1;
+      min-height: 0;
       margin: 4px 8px;
       background: var(--screen-bg);
       border-radius: 12px;
@@ -161,6 +221,8 @@
       justify-content: center;
       cursor: pointer;
     }
+    .nav-btn:active { transform: scale(0.92); }
+
     .poke-title { text-align: center; }
     .poke-id-cat {
       font-size: 0.68rem;
@@ -173,12 +235,14 @@
       font-weight: 900;
       margin: 0;
       color: #111;
+      line-height: 1.15;
     }
 
+    /* Bild & Direkt-Knöpfe */
     .poke-image-wrapper {
       position: relative;
-      width: 115px;
-      height: 115px;
+      width: 112px;
+      height: 112px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -189,7 +253,9 @@
       max-height: 100%;
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.22));
       cursor: pointer;
+      transition: filter 0.3s, transform 0.2s;
     }
+    #poke-img:active { transform: scale(1.06); }
     #poke-img.silhouette {
       filter: brightness(0) drop-shadow(0 0 5px rgba(0,0,0,0.4));
     }
@@ -207,10 +273,12 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    #read-btn { left: -10px; background: #ffe066; }
-    #cry-btn { right: -10px; background: #d0ebff; }
+    #read-btn { left: -12px; background: #ffe066; }
+    #cry-btn { right: -12px; background: #d0ebff; }
 
+    /* Sprechblase */
     .speech-bubble {
       width: 100%;
       background: #fff;
@@ -221,7 +289,7 @@
       font-weight: 700;
       color: #222;
       text-align: center;
-      line-height: 1.2;
+      line-height: 1.25;
       min-height: 32px;
       display: flex;
       align-items: center;
@@ -229,29 +297,33 @@
       flex-shrink: 0;
     }
 
+    /* Quiz-Auswahlbuttons */
     #quiz-options {
       display: none;
       grid-template-columns: 1fr 1fr;
       gap: 6px;
       width: 100%;
+      margin-top: 4px;
     }
     .quiz-choice-btn {
       background: #fff;
       border: 2px solid #339af0;
       border-radius: 10px;
-      padding: 8px 4px;
-      font-size: 0.85rem;
+      padding: 9px 6px;
+      font-size: 0.88rem;
       font-weight: 900;
       color: #111;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
-    .quiz-choice-btn.correct { background: #51cf66; color: #fff; }
-    .quiz-choice-btn.wrong { background: #ff6b6b; color: #fff; opacity: 0.6; }
+    .quiz-choice-btn.correct { background: #51cf66; color: #fff; border-color: #2b8a3e; }
+    .quiz-choice-btn.wrong { background: #ff6b6b; color: #fff; border-color: #c92a2a; opacity: 0.65; }
 
+    /* Element-Typen */
     .types-container {
       display: flex;
       gap: 5px;
@@ -260,17 +332,19 @@
       flex-shrink: 0;
     }
     .type-badge {
-      padding: 2px 9px;
+      padding: 2px 10px;
       border-radius: 14px;
       color: white;
       font-weight: 800;
       font-size: 0.78rem;
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
+    /* Stark & Schwach Boxen */
     .battle-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -300,7 +374,7 @@
     .mini-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 2px;
+      gap: 3px;
       justify-content: center;
     }
     .mini-badge {
@@ -311,6 +385,7 @@
       font-weight: 800;
     }
 
+    /* Entwicklungskette */
     .evo-section {
       width: 100%;
       background: #e9ecef;
@@ -338,7 +413,7 @@
       flex-direction: column;
       align-items: center;
       background: white;
-      padding: 2px 4px;
+      padding: 2px 5px;
       border-radius: 6px;
       border: 2px solid transparent;
       cursor: pointer;
@@ -349,6 +424,7 @@
     .evo-item span { font-size: 0.6rem; font-weight: 800; }
     .evo-arrow { font-size: 0.75rem; color: #868e96; font-weight: bold; }
 
+    /* Untere Leiste */
     footer {
       padding: 4px 8px 6px 8px;
       display: flex;
@@ -376,8 +452,17 @@
       justify-content: center;
       gap: 5px;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
-    #mic-btn.listening { background: #4cd964; color: white; }
+    #mic-btn.listening {
+      background: #4cd964;
+      color: white;
+      animation: pulseBtn 0.8s infinite alternate;
+    }
+    @keyframes pulseBtn {
+      from { transform: scale(1); }
+      to { transform: scale(1.03); }
+    }
     #stop-btn {
       background: #495057;
       color: #fff;
@@ -391,7 +476,10 @@
       gap: 3px;
       cursor: pointer;
     }
-    #stop-btn.active-sound { background: #ff922b; }
+    #stop-btn.active-sound {
+      background: #ff922b;
+      animation: pulseBtn 0.5s infinite alternate;
+    }
     #random-btn {
       background: #28aafd;
       color: white;
@@ -431,9 +519,11 @@
     .strip-thumb.selected {
       border-color: #ffcc00;
       background: #fff;
+      transform: scale(1.05);
     }
     .strip-thumb img { width: 30px; height: 30px; }
 
+    /* Modal-Fenster */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -451,6 +541,7 @@
       width: 100%;
       max-width: 390px;
       font-size: 0.9rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
     .setting-group {
       margin-bottom: 10px;
@@ -470,14 +561,13 @@
       cursor: pointer;
     }
   </style>
-
-  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Pok%C3%A9dex%20Gen%201-3%22%2C%22short_name%22%3A%22Pok%C3%A9dex%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23dc0a2d%22%2C%22theme_color%22%3A%22%23dc0a2d%22%2C%22icons%22%3A%5B%5D%7D">
 </head>
 <body>
 
   <header>
     <div class="sensor-light" id="sensor-light"></div>
 
+    <!-- Generationen 1 bis 3 Buttons -->
     <div class="gen-bar">
       <button class="gen-btn active" id="gen-1" onclick="jumpToGen(1, 1)">#1 Kanto</button>
       <button class="gen-btn" id="gen-2" onclick="jumpToGen(2, 152)">#2 Johto</button>
@@ -485,18 +575,25 @@
     </div>
 
     <div class="header-controls">
-      <button class="quiz-pill-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Wer ist das Pokémon?">
-        <span style="font-size: 1.1rem; font-weight:900; color:#fff;">?</span>
-        <span style="font-size: 0.85rem; font-weight:700; color:#fff;">??</span>
-        <span style="font-size: 0.65rem; font-weight:500; color:#fff;">? Quiz</span>
+      <!-- Erscheint automatisch auf Android Chrome, sobald die PWA-Installation bereit ist -->
+      <button id="install-app-btn" onclick="triggerAppInstall()">📲 App installieren</button>
+
+      <!-- Prominenter Quiz-Button links neben dem Lautsprecher -->
+      <button class="quiz-pill-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Quiz: Wer ist dieses Pokémon?">
+        <span style="font-size: 1.15rem; font-weight:900; color:#fff;">?</span>
+        <span style="font-size: 0.9rem; font-weight:800; color:#fff;">?</span>
+        <span style="font-size: 0.72rem; font-weight:700; color:#fff;">? Quiz</span>
       </button>
 
+      <!-- Stumm / Laut Schalter -->
       <button class="icon-top-btn" id="mute-toggle-btn" onclick="toggleMute()" title="Ton An / Aus">🔊</button>
 
+      <!-- Stimmen-Modus: Dexter vs. Prof. Eich -->
       <div class="mode-switch">
         <button class="mode-btn active" id="mode-dexter" onclick="setPersona('dexter')">🤖</button>
         <button class="mode-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬</button>
       </div>
+
       <button class="icon-top-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
   </header>
@@ -519,8 +616,10 @@
 
     <div class="speech-bubble" id="speech-bubble">Tippe auf ein Pokémon oder starte oben das Quiz!</div>
 
+    <!-- Quiz-Antwortknöpfe -->
     <div id="quiz-options"></div>
 
+    <!-- Normale Pokédex-Infos -->
     <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:5px;">
       <div class="types-container" id="poke-types" onclick="speakFocus('type')"></div>
 
@@ -556,6 +655,7 @@
     <div class="strip-wrapper" id="pokemon-strip"></div>
   </footer>
 
+  <!-- Einstellungen Modal -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-box">
       <h3 style="margin:0 0 10px 0; color:#dc0a2d;">⚙️ Stimme & Tempo</h3>
@@ -578,6 +678,102 @@
   </div>
 
 <script>
+  // =========================================================================
+  // 1. ECHTER PWA-APP-INSTALLER AUS DER KANTO-VERSION (512x512 PNG + Manifest)
+  // =========================================================================
+  let deferredInstallPrompt = null;
+
+  function setupDynamicPWA() {
+    try {
+      // Zeichnet ein echtes 512x512 PNG Pokéball-Icon (damit Chrome die App-Installation freischaltet)
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      // Hintergrund (Abgerundetes Pokédex-Rot)
+      ctx.fillStyle = '#dc0a2d';
+      ctx.beginPath();
+      ctx.arc(256, 256, 256, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Untere Hälfte Weiß
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(256, 256, 220, 0, Math.PI, false);
+      ctx.fill();
+
+      // Obere Hälfte Rot
+      ctx.fillStyle = '#ff1a1a';
+      ctx.beginPath();
+      ctx.arc(256, 256, 220, Math.PI, Math.PI * 2, false);
+      ctx.fill();
+
+      // Äußerer schwarzer Ring & Mittelbalken
+      ctx.lineWidth = 28;
+      ctx.strokeStyle = '#1c1c1e';
+      ctx.beginPath();
+      ctx.arc(256, 256, 220, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1c1c1e';
+      ctx.fillRect(36, 240, 440, 32);
+
+      // Mittelknopf
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(256, 256, 68, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 24;
+      ctx.stroke();
+
+      const pngDataUrl = canvas.toDataURL('image/png');
+      document.getElementById('dynamic-favicon').href = pngDataUrl;
+      document.getElementById('dynamic-apple-icon').href = pngDataUrl;
+
+      // Erzeugt das Manifest mit der exakten aktuellen Adresse (wichtig für GitHub Pages Unterordner /Pokedex/)
+      const startUrl = window.location.href.split('#')[0];
+      const scopeUrl = startUrl.substring(0, startUrl.lastIndexOf('/') + 1);
+
+      const manifestObj = {
+        name: "Mein sprechender Pokédex (Gen 1–3)",
+        short_name: "Pokédex",
+        description: "Sprechender Kinder-Pokédex für Kanto, Johto und Hoenn mit Quiz",
+        start_url: startUrl,
+        scope: scopeUrl,
+        display: "standalone",
+        orientation: "portrait",
+        background_color: "#dc0a2d",
+        theme_color: "#dc0a2d",
+        icons: [
+          { src: pngDataUrl, sizes: "192x192", type: "image/png", purpose: "any maskable" },
+          { src: pngDataUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+        ]
+      };
+
+      const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+      document.getElementById('dynamic-manifest').href = URL.createObjectURL(manifestBlob);
+    } catch (e) {}
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    const btn = document.getElementById('install-app-btn');
+    if (btn) btn.style.display = 'inline-block';
+  });
+
+  async function triggerAppInstall() {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    document.getElementById('install-app-btn').style.display = 'none';
+  }
+
+  // =========================================================================
+  // 2. POKÉDEX DATEN & FUNKTIONEN (GEN 1 - 3)
+  // =========================================================================
   const TYPE_INFO = {
     normal:   { de: 'Normal',   emoji: '⭐', color: '#A8A77A', strong: [], weak: ['fighting'], immune: ['ghost'], resist: [] },
     fire:     { de: 'Feuer',    emoji: '🔥', color: '#EE8130', strong: ['grass','ice','bug','steel'], weak: ['water','ground','rock'], immune: [], resist: ['fire','grass','ice','bug','steel','fairy'] },
@@ -599,33 +795,50 @@
     fairy:    { de: 'Fee',      emoji: '✨', color: '#D685AD', strong: ['fighting','dragon','dark'], weak: ['poison','steel'], immune: ['dragon'], resist: ['fighting','bug','dark'] }
   };
 
-  const OFFLINE_KANTO = [
-    [1,"Bisasam","Samen-Pokémon",["grass","poison"],0,1,"Es trägt von Geburt an einen Samen auf dem Rücken."],
-    [2,"Bisaknosp","Samen-Pokémon",["grass","poison"],1,1,"Wenn die Knospe duftet, blüht sie bald auf."],
-    [3,"Bisaflor","Samen-Pokémon",["grass","poison"],2,1,"Seine riesige Blüte tankt Sonnenlicht."],
-    [4,"Glumanda","Echsen-Pokémon",["fire"],0,2,"Die Flamme auf seinem Schweif zeigt seine Lebensenergie."],
-    [5,"Glutexo","Flammen-Pokémon",["fire"],4,2,"Im Kampf schwingt es seinen brennenden Schweif."],
-    [6,"Glurak","Flammen-Pokémon",["fire","flying"],5,2,"Sein Feueratem schmilzt sogar Felsen."],
-    [7,"Schiggy","Minikröten-Pokémon",["water"],0,3,"Bei Gefahr zieht es sich in seinen Panzer zurück."],
-    [8,"Schillok","Kröten-Pokémon",["water"],7,3,"Es steuert mit seinem buschigen Schweif im Wasser."],
-    [9,"Turtok","Panzertier-Pokémon",["water"],8,3,"Aus den Wasserkanonen schießt es unter Druck."],
-    [25,"Pikachu","Maus-Pokémon",["electric"],0,10,"In den Backentaschen speichert es Strom."]
+  const OFFLINE_STARTERS = [
+    [1,"Bisasam","Samen-Pokémon",["grass","poison"],0,1],
+    [2,"Bisaknosp","Samen-Pokémon",["grass","poison"],1,1],
+    [3,"Bisaflor","Samen-Pokémon",["grass","poison"],2,1],
+    [4,"Glumanda","Echsen-Pokémon",["fire"],0,2],
+    [5,"Glutexo","Flammen-Pokémon",["fire"],4,2],
+    [6,"Glurak","Flammen-Pokémon",["fire","flying"],5,2],
+    [7,"Schiggy","Minikröten-Pokémon",["water"],0,3],
+    [8,"Schillok","Kröten-Pokémon",["water"],7,3],
+    [9,"Turtok","Panzertier-Pokémon",["water"],8,3],
+    [25,"Pikachu","Maus-Pokémon",["electric"],172,10],
+    [26,"Raichu","Maus-Pokémon",["electric"],25,10],
+    [133,"Evoli","Evolutions-Pokémon",["normal"],0,67],
+    [134,"Aquana","Blubberspeier-Pokémon",["water"],133,67],
+    [135,"Blitza","Blitz-Pokémon",["electric"],133,67],
+    [136,"Flamara","Feuer-Pokémon",["fire"],133,67],
+    [150,"Mewtu","Genetik-Pokémon",["psychic"],0,78],
+    [151,"Mew","Neue Art-Pokémon",["psychic"],0,79],
+    [152,"Endivie","Laub-Pokémon",["grass"],0,80],
+    [155,"Feurigel","Feuermaus-Pokémon",["fire"],0,81],
+    [158,"Karnimani","Großmaul-Pokémon",["water"],0,82],
+    [172,"Pichu","Minihamster-Pokémon",["electric"],0,10],
+    [252,"Geckarbor","Waldgecko-Pokémon",["grass"],0,135],
+    [255,"Flemmli","Küken-Pokémon",["fire"],0,136],
+    [258,"Hydropi","Lehmhüpfer-Pokémon",["water"],0,137]
   ];
 
-  let pokemonList = OFFLINE_KANTO.map(item => ({
-    id: item[0],
-    name: item[1],
-    category: item[2],
-    types: item[3],
-    evolvesFrom: item[4],
-    chainId: item[5],
-    desc: item[6],
-    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item[0]}.png`,
-    thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item[0]}.png`,
-    cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${item[0]}.ogg`
-  }));
+  function mapOfflineItem(item) {
+    return {
+      id: item[0],
+      name: item[1],
+      category: item[2],
+      types: item[3],
+      evolvesFrom: item[4],
+      chainId: item[5],
+      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item[0]}.png`,
+      thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item[0]}.png`,
+      cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${item[0]}.ogg`
+    };
+  }
 
+  let pokemonList = OFFLINE_STARTERS.map(mapOfflineItem);
   let currentId = 1;
+  let pendingTargetId = null;
   let persona = 'dexter';
   let quizMode = false;
   let quizRevealed = false;
@@ -637,15 +850,32 @@
   let customPitch = parseFloat(localStorage.getItem('pokedex_pitch') || '0.85');
 
   async function initPokedex() {
+    setupDynamicPWA();
+
+    const cached = localStorage.getItem('pokedex_gen123_v3');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length >= 386) {
+          pokemonList = parsed;
+          startApp();
+          return;
+        }
+      } catch (e) {}
+    }
+
     startApp();
+
     try {
       const res = await fetch('https://beta.pokeapi.co/graphql/v1beta', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: `query { pokemon_v2_pokemonspecies(where: {id: {_lte: 386}}, order_by: {id: asc}) { id evolves_from_species_id evolution_chain_id pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: 6}}) { name genus } pokemon_v2_pokemons(limit: 1) { pokemon_v2_pokemontypes { pokemon_v2_type { name } } } } }` })
+        body: JSON.stringify({
+          query: `query { pokemon_v2_pokemonspecies(where: {id: {_lte: 386}}, order_by: {id: asc}) { id evolves_from_species_id evolution_chain_id pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: 6}}) { name genus } pokemon_v2_pokemons(limit: 1) { pokemon_v2_pokemontypes { pokemon_v2_type { name } } } } }`
+        })
       });
       const json = await res.json();
-      if (json && json.data) {
+      if (json && json.data && json.data.pokemon_v2_pokemonspecies) {
         pokemonList = json.data.pokemon_v2_pokemonspecies.map(sp => {
           const de = sp.pokemon_v2_pokemonspeciesnames[0] || {};
           const types = sp.pokemon_v2_pokemons[0].pokemon_v2_pokemontypes.map(t => t.pokemon_v2_type.name);
@@ -661,8 +891,10 @@
             cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${sp.id}.ogg`
           };
         });
+        localStorage.setItem('pokedex_gen123_v3', JSON.stringify(pokemonList));
         renderStrip();
-        selectPokemon(currentId, false);
+        selectPokemon(pendingTargetId || currentId, false);
+        pendingTargetId = null;
       }
     } catch (e) {}
   }
@@ -677,6 +909,7 @@
     if (quizMode) toggleQuizMode();
     document.querySelectorAll('.gen-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`gen-${genNum}`).classList.add('active');
+    pendingTargetId = startId;
     selectPokemon(startId, true);
   }
 
@@ -691,7 +924,7 @@
     isMuted = !isMuted;
     const btn = document.getElementById('mute-toggle-btn');
     btn.innerText = isMuted ? '🔇' : '🔊';
-    btn.style.borderColor = isMuted ? '#ff3b30' : 'rgba(255,255,255,0.5)';
+    btn.style.borderColor = isMuted ? '#ff3b30' : 'rgba(255,255,255,0.55)';
     if (isMuted) stopAllSpeech();
   }
 
@@ -739,6 +972,7 @@
 
     const imgEl = document.getElementById('poke-img');
     imgEl.classList.remove('silhouette');
+    imgEl.onerror = () => { imgEl.src = p.thumb; };
     imgEl.src = p.image;
 
     document.getElementById('poke-id').innerText = `#${String(p.id).padStart(3, '0')} • ${p.category}`;
@@ -816,14 +1050,14 @@
     quizMode = !quizMode;
     const quizBtn = document.getElementById('quiz-toggle-btn');
     quizBtn.classList.toggle('quiz-active', quizMode);
-    
+
     if (quizMode) {
-      quizBtn.innerHTML = `<span style="font-size:0.9rem; font-weight:900;">❌ Quiz beenden</span>`;
+      quizBtn.innerHTML = `<span style="font-size:0.82rem; font-weight:900; color:#fff;">❌ Beenden</span>`;
     } else {
       quizBtn.innerHTML = `
-        <span style="font-size: 1.1rem; font-weight:900; color:#fff;">?</span>
-        <span style="font-size: 0.85rem; font-weight:700; color:#fff;">??</span>
-        <span style="font-size: 0.65rem; font-weight:500; color:#fff;">? Quiz</span>
+        <span style="font-size: 1.15rem; font-weight:900; color:#fff;">?</span>
+        <span style="font-size: 0.9rem; font-weight:800; color:#fff;">?</span>
+        <span style="font-size: 0.72rem; font-weight:700; color:#fff;">? Quiz</span>
       `;
     }
 
@@ -853,7 +1087,7 @@
     imgEl.src = randomPoke.image;
 
     const choices = [randomPoke];
-    while (choices.length < 4) {
+    while (choices.length < 4 && choices.length < pokemonList.length) {
       const cand = pokemonList[Math.floor(Math.random() * pokemonList.length)];
       if (!choices.some(c => c.id === cand.id)) choices.push(cand);
     }
@@ -869,7 +1103,7 @@
       quizGrid.appendChild(btn);
     });
 
-    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf!`;
+    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf oder sag den Namen!`;
     document.getElementById('speech-bubble').innerText = promptText;
     speakText(`Wer ist dieses Pokémon?`);
   }
@@ -891,7 +1125,7 @@
 
       setTimeout(() => {
         if (quizMode && quizRevealed) startQuizRound();
-      }, 4200);
+      }, 4000);
     } else {
       if (btnEl) btnEl.classList.add('wrong');
       const tryAgain = `Fast! Versuch es nochmal!`;
@@ -976,15 +1210,26 @@
         evoPart = `Entwickelt sich zu: ${nextList.map(n => n.name).join(', ')}.`;
       } else if (prev) {
         evoPart = `Entwickelt aus ${prev.name}.`;
+      } else {
+        evoPart = `Keine weitere Entwicklung.`;
       }
       if (focus === 'type') return `${cleanName}. ${typePart}`;
       if (focus === 'evo') return `${cleanName}. ${evoPart}`;
-      if (focus === 'strong') return `${cleanName}. Stark gegen: ${strongNames.join(', ')}.`;
+      if (focus === 'strong') return strongNames.length ? `${cleanName}. Stark gegen: ${strongNames.join(', ')}.` : `${cleanName} hat keinen speziellen Typ-Vorteil.`;
       if (focus === 'weak') return `${cleanName}. Vorsicht vor: ${weakNames.join(', ')}.`;
       return `${cleanName}. ${p.category}. ${typePart} ${evoPart}`;
     } else {
       const typePart = typeNames.length === 1 ? `Es hat das Element ${typeNames[0]}.` : `Es verbindet ${typeNames[0]} und ${typeNames[1]}.`;
-      return `Das ist ${cleanName}, ein ${p.category}! ${typePart}`;
+      let evoPart = '';
+      if (nextList.length === 1) evoPart = `Mit gutem Training wird es zu ${nextList[0].name}!`;
+      else if (nextList.length > 1) evoPart = `Es kann sich in ${nextList.map(n => n.name).join(' oder ')} entwickeln!`;
+      else if (prev) evoPart = `Es hat sich aus ${prev.name} entwickelt!`;
+
+      if (focus === 'type') return `Aha, ${cleanName}! ${typePart}`;
+      if (focus === 'evo') return evoPart || `${cleanName} entwickelt sich nicht weiter.`;
+      if (focus === 'strong') return strongNames.length ? `Im Kampf ist ${cleanName} super stark gegen ${strongNames.join(' und ')}!` : `${cleanName} kämpft mit normalen Attacken.`;
+      if (focus === 'weak') return `Pass gut auf vor ${weakNames.join(' und ')}, dagegen ist ${cleanName} empfindlich!`;
+      return `Schau mal, das ist ${cleanName}, ein ${p.category}! ${typePart} ${evoPart}`;
     }
   }
 
@@ -1046,10 +1291,12 @@
     if (!quizMode) speakFullInfo();
   }
 
-  // Intelligenter Mikrofon-Start: Nutzt auf dem Handy echte Spracheingabe, auf dem Tablet das Touch-Menü
   function startListening() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
+    const ua = navigator.userAgent.toLowerCase();
+    const isFireDevice = ua.includes('silk') || ua.includes('kindle') || ua.includes('kf') || ua.includes('aft');
+
+    if (!SpeechRecognition || isFireDevice) {
       openQuickQueryModal();
       return;
     }
@@ -1110,7 +1357,7 @@
       `;
       document.body.appendChild(modal);
     } else {
-      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du wissen über ${currentPoke.name}?`;
+      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du über ${currentPoke.name} wissen?`;
       modal.style.display = 'flex';
     }
   }
@@ -1142,22 +1389,31 @@
         break;
       }
     }
+    if (!matchedPokemon) {
+      for (const p of pokemonList) {
+        const prefix = p.name.toLowerCase().slice(0, 5);
+        if (prefix.length >= 4 && query.includes(prefix)) {
+          matchedPokemon = p;
+          break;
+        }
+      }
+    }
 
     if (quizMode && !quizRevealed) {
       if (matchedPokemon && matchedPokemon.id === currentId) {
         checkQuizAnswer(currentId, null);
       } else {
-        speakText(`Noch nicht ganz!`);
+        speakText(`Noch nicht ganz! Versuch es nochmal!`);
       }
       return;
     }
 
     const target = matchedPokemon || pokemonList.find(x => x.id === currentId);
     let focus = 'all';
-    if (query.includes('stark')) focus = 'strong';
-    else if (query.includes('schwach') || query.includes('vorsicht')) focus = 'weak';
-    else if (query.includes('entwickel')) focus = 'evo';
-    else if (query.includes('typ')) focus = 'type';
+    if (query.includes('stark') || query.includes('gewinnt')) focus = 'strong';
+    else if (query.includes('schwach') || query.includes('vorsicht') || query.includes('angst')) focus = 'weak';
+    else if (query.includes('entwickel') || query.includes('zu was')) focus = 'evo';
+    else if (query.includes('typ') || query.includes('element')) focus = 'type';
 
     if (matchedPokemon) {
       selectPokemon(matchedPokemon.id, false);
@@ -1168,6 +1424,8 @@
       const txt = buildExplanationText(target, focus);
       document.getElementById('speech-bubble').innerText = txt;
       speakText(txt);
+    } else {
+      speakText('Sag mir einfach nochmal deutlich den Namen des Pokémon!');
     }
   }
 
