@@ -121,7 +121,7 @@
       align-items: center;
     }
 
-    /* Hauptbildschirm (Minimaler Weißraum, maximaler Fokus) */
+    /* Hauptbildschirm (Maximaler Platz für das große Bild) */
     main {
       flex: 1;
       min-height: 0;
@@ -133,7 +133,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 4px 8px;
+      padding: 3px 8px;
       overflow-y: auto;
       position: relative;
     }
@@ -165,23 +165,23 @@
       text-transform: uppercase;
     }
     .poke-name {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 900;
       margin: 0;
       color: #111;
       line-height: 1.1;
     }
 
-    /* RIESIGES RIESIGES Pokémon-Bild */
+    /* RIESIGES, raumfüllendes Pokémon-Bild */
     .poke-image-wrapper {
       position: relative;
-      width: 190px;
-      height: 180px;
+      width: 220px;
+      height: 205px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin: 0;
+      margin: 2px 0;
     }
     #poke-img {
       max-width: 100%;
@@ -193,25 +193,6 @@
     #poke-img:active { transform: scale(1.05); }
     #poke-img.silhouette {
       filter: brightness(0) drop-shadow(0 0 6px rgba(0,0,0,0.4));
-    }
-
-    /* Sprechblase */
-    .speech-bubble {
-      width: 100%;
-      background: #fff;
-      border: 2px solid #dee2e6;
-      border-radius: 10px;
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #222;
-      text-align: center;
-      line-height: 1.2;
-      min-height: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
     }
 
     /* Quiz-Optionen */
@@ -269,7 +250,7 @@
       background: #fff;
       border: 1.5px solid #e9ecef;
       border-radius: 8px;
-      padding: 5px 8px;
+      padding: 4px 8px;
       flex-shrink: 0;
       font-size: 0.7rem;
     }
@@ -309,16 +290,16 @@
       width: 100%;
       background: #e9ecef;
       border-radius: 8px;
-      padding: 3px;
+      padding: 2px;
       flex-shrink: 0;
     }
     .evo-title {
-      font-size: 0.58rem;
+      font-size: 0.55rem;
       text-transform: uppercase;
       color: #495057;
       font-weight: 800;
       text-align: center;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
     .evo-chain {
       display: flex;
@@ -332,16 +313,16 @@
       flex-direction: column;
       align-items: center;
       background: white;
-      padding: 2px 5px;
+      padding: 2px 4px;
       border-radius: 6px;
       border: 2px solid transparent;
       cursor: pointer;
-      min-width: 42px;
+      min-width: 40px;
     }
     .evo-item.active { border-color: var(--pokedex-red); background: #fff5f5; }
-    .evo-item img { width: 24px; height: 24px; object-fit: contain; }
-    .evo-item span { font-size: 0.55rem; font-weight: 800; }
-    .evo-arrow { font-size: 0.65rem; color: #868e96; font-weight: bold; }
+    .evo-item img { width: 22px; height: 22px; object-fit: contain; }
+    .evo-item span { font-size: 0.52rem; font-weight: 800; }
+    .evo-arrow { font-size: 0.6rem; color: #868e96; font-weight: bold; }
 
     /* Untere Leiste */
     footer {
@@ -432,6 +413,7 @@
       flex-shrink: 0;
     }
 
+    /* Einheitliche, große HD-Vorschau in der Leiste unten */
     .strip-wrapper {
       background: rgba(0,0,0,0.28);
       border-radius: 10px;
@@ -459,7 +441,7 @@
       background: #fff;
       transform: scale(1.06);
     }
-    .strip-thumb img { width: 36px; height: 36px; }
+    .strip-thumb img { width: 38px; height: 38px; object-fit: contain; }
 
     /* Modal-Fenster */
     .modal-backdrop {
@@ -552,16 +534,14 @@
       <button class="nav-btn" onclick="changePokemon(1)">➡️</button>
     </div>
 
-    <!-- RIESIGES Pokémon-Bild in der Mitte (Klick zum Vorlesen, kein Schrei-Button mehr) -->
+    <!-- RIESIGES, RAUMFÜLLENDES Pokémon-Bild (Klick zum Vorlesen) -->
     <div class="poke-image-wrapper">
       <img id="poke-img" src="" alt="Pokémon" onclick="speakFullInfo()" title="Tippen zum Vorlesen">
     </div>
 
-    <div class="speech-bubble" id="speech-bubble">Tippe auf ein Pokémon oder starte oben das Quiz!</div>
-
     <div id="quiz-options"></div>
 
-    <!-- Normale Pokédex-Infos mit minimalistischer Stark/Schwach-Leiste & Trennlinie -->
+    <!-- Normale Pokédex-Infos mit Trennlinie -->
     <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:4px;">
       <div class="types-container" id="poke-types" onclick="speakFocus('type')"></div>
 
@@ -787,7 +767,6 @@
   let quizMode = false;
   let quizRevealed = false;
   let isMuted = false;
-  let currentAudio = null;
 
   let selectedVoiceURI = localStorage.getItem('pokedex_voice_uri') || 'auto_male';
   let dexterSpeed = parseFloat(localStorage.getItem('pokedex_speed') || '1.25');
@@ -902,7 +881,8 @@
         if (quizMode) toggleQuizMode();
         selectPokemon(p.id, true);
       };
-      div.innerHTML = `<img src="${p.thumb}" alt="${p.name}" loading="lazy">`;
+      // Hier nutzen wir jetzt ebenfalls das hochauflösende Artwork als Miniatur, damit es 100% einheitlich ist!
+      div.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy">`;
       strip.appendChild(div);
     });
   }
@@ -977,7 +957,8 @@
       const item = document.createElement('div');
       item.className = 'evo-item' + (member.id === p.id ? ' active' : '');
       item.onclick = () => selectPokemon(member.id, true);
-      item.innerHTML = `<img src="${member.thumb}" alt="${member.name}"><span>${member.name}</span>`;
+      // Auch in der Entwicklungskette nutzen wir das einheitliche Artwork
+      item.innerHTML = `<img src="${member.image}" alt="${member.name}"><span>${member.name}</span>`;
       evoContainer.appendChild(item);
     });
 
@@ -989,7 +970,6 @@
     }
 
     const explanation = buildExplanationText(p, 'all');
-    document.getElementById('speech-bubble').innerText = explanation;
     if (autoSpeak) speakText(explanation);
   }
 
@@ -1050,8 +1030,6 @@
       quizGrid.appendChild(btn);
     });
 
-    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf oder sag den Namen!`;
-    document.getElementById('speech-bubble').innerText = promptText;
     speakText(`Wer ist dieses Pokémon?`);
   }
 
@@ -1067,7 +1045,6 @@
       document.getElementById('poke-name').innerText = correctPoke.name;
 
       const winText = `Richtig! Es ist ${correctPoke.name}!`;
-      document.getElementById('speech-bubble').innerText = winText;
       speakText(winText);
 
       setTimeout(() => {
@@ -1075,9 +1052,16 @@
       }, 4000);
     } else {
       if (btnEl) btnEl.classList.add('wrong');
-      const tryAgain = `Fast! Versuch es nochmal!`;
-      document.getElementById('speech-bubble').innerText = tryAgain;
-      speakText(tryAgain);
+      speakText(`Fast! Versuch es nochmal!`);
+    }
+  }
+
+  function handleImageClick() {
+    if (quizMode && !quizRevealed) {
+      const p = pokemonList.find(x => x.id === currentId);
+      speakText(`Tipp: Es hat den Typ ${TYPE_INFO[p.types[0]].de}!`);
+    } else {
+      speakFullInfo();
     }
   }
 
@@ -1109,10 +1093,6 @@
 
   function stopAllSpeech() {
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
     setSoundActiveUI(false);
   }
 
@@ -1196,17 +1176,13 @@
   function speakFullInfo() {
     const p = pokemonList.find(x => x.id === currentId);
     if (!p) return;
-    const text = buildExplanationText(p, 'all');
-    document.getElementById('speech-bubble').innerText = text;
-    speakText(text);
+    speakText(buildExplanationText(p, 'all'));
   }
 
   function speakFocus(focusType) {
     const p = pokemonList.find(x => x.id === currentId);
     if (!p) return;
-    const text = buildExplanationText(p, focusType);
-    document.getElementById('speech-bubble').innerText = text;
-    speakText(text);
+    speakText(buildExplanationText(p, focusType));
   }
 
   function setPersona(newPersona) {
@@ -1282,7 +1258,7 @@
       `;
       document.body.appendChild(modal);
     } else {
-      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du über ${currentPoke.name} wissen?`;
+      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du wissen über ${currentPoke.name}?`;
       modal.style.display = 'flex';
     }
   }
@@ -1343,11 +1319,9 @@
     if (matchedPokemon) {
       selectPokemon(matchedPokemon.id, false);
       const txt = buildExplanationText(matchedPokemon, focus);
-      document.getElementById('speech-bubble').innerText = txt;
       speakText(txt);
     } else if (focus !== 'all' && target) {
       const txt = buildExplanationText(target, focus);
-      document.getElementById('speech-bubble').innerText = txt;
       speakText(txt);
     } else {
       speakText('Sag mir einfach nochmal deutlich den Namen des Pokémon!');
