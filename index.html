@@ -472,7 +472,6 @@
     }
   </style>
 
-  <!-- PWA Manifest direkt im Code eingebettet für perfekte Handy-Installation -->
   <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Pok%C3%A9dex%20Gen%201-3%22%2C%22short_name%22%3A%22Pok%C3%A9dex%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23dc0a2d%22%2C%22theme_color%22%3A%22%23dc0a2d%22%2C%22icons%22%3A%5B%5D%7D">
 </head>
 <body>
@@ -1113,7 +1112,7 @@
     localStorage.setItem('pokedex_pitch', customPitch);
   }
   function saveVoiceSettings() {
-    selectedVoiceURI = document.getElementById('voice-select'].value;
+    selectedVoiceURI = document.getElementById('voice-select').value;
     localStorage.setItem('pokedex_voice_uri', selectedVoiceURI);
   }
   if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = populateVoiceDropdown;
