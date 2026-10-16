@@ -93,7 +93,6 @@
       flex-shrink: 0;
     }
 
-    /* Neuer, prominenter Quiz-Button links neben dem Lautsprecher */
     .quiz-pill-btn {
       background: linear-gradient(135deg, #3b5bdb, #4c6ef5);
       border: 2px solid #fff;
@@ -108,11 +107,9 @@
       gap: 3px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.25);
       flex-shrink: 0;
-      letter-spacing: 0.5px;
     }
     .quiz-pill-btn.quiz-active {
       background: linear-gradient(135deg, #e03131, #f03e3e);
-      border-color: #fff;
     }
 
     .mode-switch {
@@ -458,6 +455,7 @@
     }
     .strip-thumb img { width: 30px; height: 30px; }
 
+    /* Schnell-Frage Menü (Fällt automatisch ein, wenn Mikrofon auf dem Tablet fehlt) */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -507,14 +505,12 @@
     </div>
 
     <div class="header-controls">
-      <!-- Prominenter Quiz-Button links neben dem Lautsprecher mit weißen Fragezeichen in verschiedenen Größen -->
       <button class="quiz-pill-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Wer ist das Pokémon?">
         <span style="font-size: 1.1rem; font-weight:900; color:#fff;">?</span>
         <span style="font-size: 0.85rem; font-weight:700; color:#fff;">??</span>
         <span style="font-size: 0.65rem; font-weight:500; color:#fff;">? Quiz</span>
       </button>
 
-      <!-- Stumm / Laut Schalter -->
       <button class="icon-top-btn" id="mute-toggle-btn" onclick="toggleMute()" title="Ton An / Aus">🔊</button>
 
       <div class="mode-switch">
@@ -1062,7 +1058,7 @@
     const p = pokemonList.find(x => x.id === currentId);
     if (!p) return;
     const text = buildExplanationText(p, focusType);
-    document.getElementById('speech-bubble').innerText = text;
+    document.getElementById('speech-bubble'].innerText = text;
     speakText(text);
   }
 
@@ -1073,37 +1069,80 @@
     if (!quizMode) speakFullInfo();
   }
 
+  // Abfang-Funktion für Geräte ohne Google-Spracherkennung (wie Fire Tablet)
   function startListening() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert('Bitte öffne die App in Google Chrome für die Spracheingabe!');
+      // Automatischer Fallback für Tablets ohne Google-Dienste: Öffnet direkt das interaktive Schnellwahl-Fenster!
+      openQuickQueryModal();
       return;
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'de-DE';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 3;
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'de-DE';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 3;
 
-    const micBtn = document.getElementById('mic-btn');
-    const micLabel = document.getElementById('mic-label');
+      const micBtn = document.getElementById('mic-btn');
+      const micLabel = document.getElementById('mic-label');
 
-    recognition.onstart = () => {
-      micBtn.classList.add('listening');
-      micLabel.innerText = 'Ich höre zu...';
-    };
+      recognition.onstart = () => {
+        micBtn.classList.add('listening');
+        micLabel.innerText = 'Ich höre zu...';
+      };
 
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.toLowerCase();
-      handleVoiceQuery(transcript);
-    };
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        handleVoiceQuery(transcript);
+      };
 
-    recognition.onend = () => {
-      micBtn.classList.remove('listening');
-      micLabel.innerText = 'Frag den Pokédex!';
-    };
+      recognition.onerror = () => {
+        openQuickQueryModal();
+      };
 
-    recognition.start();
+      recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micLabel.innerText = 'Frag den Pokédex!';
+      };
+
+      recognition.start();
+    } catch (e) {
+      openQuickQueryModal();
+    }
+  }
+
+  // Interaktives Schnell-Fragefenster für Touch-Bedienung auf dem Tablet
+  function openQuickQueryModal() {
+    const currentPoke = pokemonList.find(x => x.id === currentId) || { name: 'dieses Pokémon' };
+    let modal = document.getElementById('quick-query-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'quick-query-modal';
+      modal.className = 'modal-backdrop';
+      modal.style.display = 'flex';
+      modal.innerHTML = `
+        <div class="modal-box" style="text-align:center;">
+          <h3 style="color:#dc0a2d; margin-top:0;">🎯 Was möchtest du über ${currentPoke.name} wissen?</h3>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+            <button class="btn-primary" style="background:#339af0; padding:12px; font-size:1rem;" onclick="quickAsk('type')">⭐ Welcher Typ ist das?</button>
+            <button class="btn-primary" style="background:#20c997; padding:12px; font-size:1rem;" onclick="quickAsk('strong')">💪 Gegen wen ist es stark?</button>
+            <button class="btn-primary" style="background:#fd7e14; padding:12px; font-size:1rem;" onclick="quickAsk('weak')">🛡️ Vorsicht vor wem?</button>
+            <button class="btn-primary" style="background:#845ef7; padding:12px; font-size:1rem;" onclick="quickAsk('evo')">✨ Zu was entwickelt es sich?</button>
+            <button class="btn-primary" style="background:#868e96; margin-top:6px; padding:10px;" onclick="document.getElementById('quick-query-modal').style.display='none'">❌ Schließen</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    } else {
+      modal.querySelector('h3').innerText = `🎯 Was möchtest du über ${currentPoke.name} wissen?`;
+      modal.style.display = 'flex';
+    }
+  }
+
+  function quickAsk(focusType) {
+    document.getElementById('quick-query-modal').style.display = 'none';
+    speakFocus(focusType);
   }
 
   function handleVoiceQuery(query) {
