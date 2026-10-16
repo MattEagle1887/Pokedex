@@ -36,16 +36,17 @@
     header {
       display: flex;
       align-items: center;
-      padding: 8px 10px;
+      padding: 8px 8px;
       background: var(--pokedex-red);
       border-bottom: 4px solid var(--pokedex-dark);
       box-shadow: 0 3px 8px rgba(0,0,0,0.28);
       z-index: 10;
-      gap: 6px;
+      gap: 5px;
+      overflow-x: auto;
     }
     .sensor-light {
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #b8e2ff, var(--blue-light), #004b76);
       border: 3px solid #fff;
@@ -60,27 +61,37 @@
       to { box-shadow: 0 0 22px #fff, 0 0 40px #00ffff; transform: scale(1.1); }
     }
 
-    /* Generationen-Wahl */
+    /* Große Gen-Buttons */
     .gen-bar {
       display: flex;
       gap: 4px;
-      background: rgba(0,0,0,0.25);
+      background: rgba(0,0,0,0.3);
       padding: 3px;
-      border-radius: 14px;
+      border-radius: 12px;
+      flex-shrink: 0;
     }
     .gen-btn {
-      background: transparent;
-      border: none;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
       color: #fff;
-      font-weight: 800;
-      font-size: 0.72rem;
-      padding: 4px 7px;
-      border-radius: 10px;
+      font-weight: 900;
+      font-size: 0.75rem;
+      padding: 5px 8px;
+      border-radius: 9px;
       cursor: pointer;
     }
     .gen-btn.active {
       background: #ffcc00;
       color: #111;
+      border-color: #fff;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: auto;
+      flex-shrink: 0;
     }
 
     .mode-switch {
@@ -88,7 +99,6 @@
       background: rgba(0,0,0,0.3);
       border-radius: 18px;
       padding: 2px;
-      margin-left: auto;
     }
     .mode-btn {
       background: transparent;
@@ -96,7 +106,7 @@
       color: rgba(255,255,255,0.85);
       font-weight: 800;
       font-size: 0.72rem;
-      padding: 4px 8px;
+      padding: 4px 7px;
       border-radius: 14px;
       cursor: pointer;
     }
@@ -112,7 +122,7 @@
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -120,9 +130,11 @@
       flex-shrink: 0;
     }
     .icon-top-btn.quiz-active {
-      background: #ffcc00;
-      color: #111;
+      background: #ff3b30;
+      color: #fff;
       border-color: #fff;
+      font-size: 0.8rem;
+      font-weight: 900;
     }
 
     /* Hauptbildschirm */
@@ -190,7 +202,6 @@
       cursor: pointer;
       transition: filter 0.35s, transform 0.2s;
     }
-    /* Schatten-Filter für das Quiz */
     #poke-img.silhouette {
       filter: brightness(0) drop-shadow(0 0 6px rgba(0,0,0,0.4));
     }
@@ -231,7 +242,7 @@
       justify-content: center;
     }
 
-    /* Quiz-Auswahlbuttons (Wenn Quiz aktiv ist) */
+    /* Quiz-Auswahlbuttons */
     #quiz-options {
       display: none;
       grid-template-columns: 1fr 1fr;
@@ -496,21 +507,26 @@
   <header>
     <div class="sensor-light" id="sensor-light"></div>
 
-    <!-- Generationen 1 bis 3 Umschalter -->
+    <!-- Generationen 1 bis 3 Buttons (#1 Kanto, #2 Johto, #3 Hoenn) -->
     <div class="gen-bar">
-      <button class="gen-btn active" id="gen-1" onclick="jumpToGen(1, 1)">G1</button>
-      <button class="gen-btn" id="gen-2" onclick="jumpToGen(2, 152)">G2</button>
-      <button class="gen-btn" id="gen-3" onclick="jumpToGen(3, 252)">G3</button>
+      <button class="gen-btn active" id="gen-1" onclick="jumpToGen(1, 1)">#1 Kanto</button>
+      <button class="gen-btn" id="gen-2" onclick="jumpToGen(2, 152)">#2 Johto</button>
+      <button class="gen-btn" id="gen-3" onclick="jumpToGen(3, 252)">#3 Hoenn</button>
     </div>
 
-    <!-- Quiz-Button ("Wer ist dieses Pokémon?") -->
-    <button class="icon-top-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Quiz: Wer ist dieses Pokémon?">❓</button>
+    <div class="header-controls">
+      <!-- Stumm / Laut Schalter -->
+      <button class="icon-top-btn" id="mute-toggle-btn" onclick="toggleMute()" title="Ton An / Aus">🔊</button>
 
-    <div class="mode-switch">
-      <button class="mode-btn active" id="mode-dexter" onclick="setPersona('dexter')">🤖</button>
-      <button class="mode-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬</button>
+      <!-- Quiz-Button (Wird im Quiz zum Abbrechen-Button) -->
+      <button class="icon-top-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Quiz: Wer ist dieses Pokémon?">❓</button>
+
+      <div class="mode-switch">
+        <button class="mode-btn active" id="mode-dexter" onclick="setPersona('dexter')">🤖</button>
+        <button class="mode-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬</button>
+      </div>
+      <button class="icon-top-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
-    <button class="icon-top-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
   </header>
 
   <main>
@@ -531,7 +547,7 @@
 
     <div class="speech-bubble" id="speech-bubble">Tippe auf ein Pokémon oder starte mit ❓ oben das Schatten-Quiz!</div>
 
-    <!-- Quiz-Antwortknöpfe (erscheinen nur im Quiz-Modus) -->
+    <!-- Quiz-Antwortknöpfe -->
     <div id="quiz-options"></div>
 
     <!-- Normale Pokédex-Infos -->
@@ -593,7 +609,6 @@
   </div>
 
 <script>
-  // Alle 18 Pokémon-Typen (inkl. Unlicht & Stahl für Gen 2 & 3!)
   const TYPE_INFO = {
     normal:   { de: 'Normal',   emoji: '⭐', color: '#A8A77A', strong: [], weak: ['fighting'], immune: ['ghost'], resist: [] },
     fire:     { de: 'Feuer',    emoji: '🔥', color: '#EE8130', strong: ['grass','ice','bug','steel'], weak: ['water','ground','rock'], immune: [], resist: ['fire','grass','ice','bug','steel','fairy'] },
@@ -620,13 +635,13 @@
   let persona = 'dexter';
   let quizMode = false;
   let quizRevealed = false;
+  let isMuted = false;
   let currentAudio = null;
 
   let selectedVoiceURI = localStorage.getItem('pokedex_voice_uri') || 'auto_male';
   let dexterSpeed = parseFloat(localStorage.getItem('pokedex_speed') || '1.25');
   let customPitch = parseFloat(localStorage.getItem('pokedex_pitch') || '0.85');
 
-  // Lädt einmalig alle 386 Pokémon (Gen 1: Kanto, Gen 2: Johto, Gen 3: Hoenn) und speichert sie im Handy
   const GRAPHQL_386 = `
   query {
     pokemon_v2_pokemonspecies(where: {id: {_lte: 386}}, order_by: {id: asc}) {
@@ -694,19 +709,24 @@
   }
 
   function jumpToGen(genNum, startId) {
+    if (quizMode) toggleQuizMode();
     document.querySelectorAll('.gen-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`gen-${genNum}`).classList.add('active');
-    if (quizMode) {
-      startQuizRound();
-    } else {
-      selectPokemon(startId, true);
-    }
+    selectPokemon(startId, true);
   }
 
   function updateGenHighlight(id) {
     const g = id <= 151 ? 1 : (id <= 251 ? 2 : 3);
     document.querySelectorAll('.gen-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`gen-${g}`).classList.add('active');
+  }
+
+  function toggleMute() {
+    isMuted = !isMuted;
+    const btn = document.getElementById('mute-toggle-btn');
+    btn.innerText = isMuted ? '🔇' : '🔊';
+    btn.style.borderColor = isMuted ? '#ff3b30' : 'rgba(255,255,255,0.5)';
+    if (isMuted) stopAllSpeech();
   }
 
   function getStrengthsAndWeaknesses(types) {
@@ -762,7 +782,6 @@
     document.getElementById('poke-id').innerText = `#${String(p.id).padStart(3, '0')} • ${p.category}`;
     document.getElementById('poke-name').innerText = p.name;
 
-    // Typen
     const typesContainer = document.getElementById('poke-types');
     typesContainer.innerHTML = '';
     p.types.forEach(t => {
@@ -774,7 +793,6 @@
       typesContainer.appendChild(badge);
     });
 
-    // Stark & Schwach
     const { strong, weak } = getStrengthsAndWeaknesses(p.types);
     const strongContainer = document.getElementById('strong-badges');
     const weakContainer = document.getElementById('weak-badges');
@@ -803,7 +821,6 @@
       weakContainer.appendChild(b);
     });
 
-    // Entwicklungen (jetzt über alle 3 Generationen hinweg, z.B. Pichu -> Pikachu -> Raichu!)
     const evoContainer = document.getElementById('evo-chain');
     evoContainer.innerHTML = '';
     const chainMembers = pokemonList.filter(x => x.chainId === p.chainId);
@@ -821,7 +838,6 @@
       evoContainer.appendChild(item);
     });
 
-    // Untere Leiste markieren
     document.querySelectorAll('.strip-thumb').forEach(el => el.classList.remove('selected'));
     const activeThumb = document.getElementById(`thumb-${p.id}`);
     if (activeThumb) {
@@ -834,12 +850,13 @@
     if (autoSpeak) speakText(explanation);
   }
 
-  // =====================================================
-  // "WER IST DIESES POKÉMON?" QUIZ-MODUS
-  // =====================================================
   function toggleQuizMode() {
     quizMode = !quizMode;
-    document.getElementById('quiz-toggle-btn').classList.toggle('quiz-active', quizMode);
+    const quizBtn = document.getElementById('quiz-toggle-btn');
+    quizBtn.classList.toggle('quiz-active', quizMode);
+    quizBtn.innerText = quizMode ? '❌' : '❓';
+    quizBtn.title = quizMode ? 'Quiz beenden' : 'Quiz: Wer ist dieses Pokémon?';
+
     document.getElementById('normal-info-area').style.display = quizMode ? 'none' : 'flex';
     document.getElementById('quiz-options').style.display = quizMode ? 'grid' : 'none';
 
@@ -854,7 +871,6 @@
     if (pokemonList.length === 0) return;
     quizRevealed = false;
 
-    // Zufälliges Pokémon wählen
     const randomPoke = pokemonList[Math.floor(Math.random() * pokemonList.length)];
     currentId = randomPoke.id;
     updateGenHighlight(currentId);
@@ -866,7 +882,6 @@
     imgEl.classList.add('silhouette');
     imgEl.src = randomPoke.image;
 
-    // 4 Antwort-Buttons bauen (1 richtig, 3 zufällige andere)
     const choices = [randomPoke];
     while (choices.length < 4) {
       const cand = pokemonList[Math.floor(Math.random() * pokemonList.length)];
@@ -884,7 +899,7 @@
       quizGrid.appendChild(btn);
     });
 
-    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf oder sag mir den Namen über das Mikrofon!`;
+    const promptText = `Wer ist dieses Pokémon? Tippe auf einen Knopf oder sag mir den Namen!`;
     document.getElementById('speech-bubble').innerText = promptText;
     speakText(`Wer ist dieses Pokémon?`);
   }
@@ -900,17 +915,16 @@
       document.getElementById('poke-id').innerText = `#${String(correctPoke.id).padStart(3, '0')} • ${correctPoke.category}`;
       document.getElementById('poke-name').innerText = correctPoke.name;
 
-      const winText = `Juhu, richtig! Es ist ${correctPoke.name}! ${buildExplanationText(correctPoke, 'type')}`;
+      const winText = `Richtig! Es ist ${correctPoke.name}!`;
       document.getElementById('speech-bubble').innerText = winText;
       speakText(winText);
 
-      // Nach 4.5 Sekunden automatisch nächstes Rätsel
       setTimeout(() => {
         if (quizMode && quizRevealed) startQuizRound();
-      }, 4800);
+      }, 4200);
     } else {
       if (btnEl) btnEl.classList.add('wrong');
-      const tryAgain = `Fast! Versuch es nochmal! Tipp: Es ist vom Typ ${TYPE_INFO[correctPoke.types[0]].de}!`;
+      const tryAgain = `Fast! Versuch es nochmal!`;
       document.getElementById('speech-bubble').innerText = tryAgain;
       speakText(tryAgain);
     }
@@ -919,7 +933,7 @@
   function handleImageClick() {
     if (quizMode && !quizRevealed) {
       const p = pokemonList.find(x => x.id === currentId);
-      speakText(`Ein kleiner Tipp: Dieses Pokémon hat den Typ ${TYPE_INFO[p.types[0]].de}!`);
+      speakText(`Tipp: Es hat den Typ ${TYPE_INFO[p.types[0]].de}!`);
     } else {
       speakFullInfo();
     }
@@ -957,6 +971,7 @@
   }
 
   function playCry() {
+    if (isMuted) return;
     const p = pokemonList.find(x => x.id === currentId);
     if (!p) return;
     stopAllSpeech();
@@ -968,7 +983,6 @@
     currentAudio.play().catch(() => setSoundActiveUI(false));
   }
 
-  // Baut eine komplett eigene, kindgerechte Erklärung aus den Daten
   function buildExplanationText(p, focus = 'all') {
     const cleanName = p.name.replace('♀', ' weiblich').replace('♂', ' männlich');
     const typeNames = p.types.map(t => TYPE_INFO[t] ? TYPE_INFO[t].de : t);
@@ -980,63 +994,23 @@
     const nextList = pokemonList.filter(x => x.evolvesFrom === p.id);
 
     if (persona === 'dexter') {
-      const typePart = typeNames.length === 1
-        ? `Typ: ${typeNames[0]}.`
-        : `Typ: ${typeNames[0]} und ${typeNames[1]}.`;
-
+      const typePart = typeNames.length === 1 ? `Typ: ${typeNames[0]}.` : `Typ: ${typeNames[0]} und ${typeNames[1]}.`;
       let evoPart = '';
-      if (!prev && nextList.length === 0) {
-        evoPart = `Keine weitere Entwicklung bekannt.`;
-      } else if (nextList.length === 1) {
-        const next1 = nextList[0];
-        const next2 = pokemonList.find(x => x.evolvesFrom === next1.id);
-        evoPart = next2
-          ? `Entwickelt sich zu ${next1.name} und weiter zu ${next2.name}.`
-          : `Weiterentwicklung zu ${next1.name}.`;
+      if (nextList.length === 1) {
+        evoPart = `Entwickelt sich zu ${nextList[0].name}.`;
       } else if (nextList.length > 1) {
-        evoPart = `Kann sich entwickeln zu: ${nextList.map(n => n.name).join(', ')}.`;
-      } else if (prev && nextList.length === 0) {
-        evoPart = `Entwickelt aus ${prev.name}. Höchste Stufe erreicht.`;
+        evoPart = `Entwickelt sich zu: ${nextList.map(n => n.name).join(', ')}.`;
+      } else if (prev) {
+        evoPart = `Entwickelt aus ${prev.name}.`;
       }
-
-      const strongPart = strongNames.length > 0
-        ? `Stark gegen: ${strongNames.join(', ')}.`
-        : `Keine besonderen Typ-Vorteile im Angriff.`;
-      const weakPart = `Vorsicht vor: ${weakNames.join(', ')}.`;
-
       if (focus === 'type') return `${cleanName}. ${typePart}`;
       if (focus === 'evo') return `${cleanName}. ${evoPart}`;
-      if (focus === 'strong') return `${cleanName}. ${strongPart}`;
-      if (focus === 'weak') return `${cleanName}. ${weakPart}`;
-
-      return `${cleanName}. ${p.category}. ${typePart} ${evoPart} ${strongPart}`;
+      if (focus === 'strong') return `${cleanName}. Stark gegen: ${strongNames.join(', ')}.`;
+      if (focus === 'weak') return `${cleanName}. Vorsicht vor: ${weakNames.join(', ')}.`;
+      return `${cleanName}. ${p.category}. ${typePart} ${evoPart}`;
     } else {
-      const typePart = typeNames.length === 1
-        ? `Es hat das Element ${typeNames[0]}.`
-        : `Es verbindet die Elemente ${typeNames[0]} und ${typeNames[1]}.`;
-
-      let evoPart = '';
-      if (!prev && nextList.length === 0) {
-        evoPart = `Es entwickelt sich nicht weiter und ist schon genauso klasse, wie es ist!`;
-      } else if (nextList.length === 1) {
-        evoPart = `Wenn es fleißig trainiert, entwickelt es sich zu ${nextList[0].name}!`;
-      } else if (nextList.length > 1) {
-        evoPart = `Es kann sich in ${nextList.map(n => n.name).join(' oder ')} verwandeln!`;
-      } else {
-        evoPart = `Es ist aus ${prev.name} entstanden und schon auf der höchsten Stufe!`;
-      }
-
-      const strongPart = strongNames.length > 0
-        ? `Im Kampf ist ${cleanName} super stark gegen ${strongNames.join(' und ')}!`
-        : `${cleanName} kämpft am besten mit seinen normalen Attacken.`;
-      const weakPart = `Aufpassen muss es vor ${weakNames.join(' und ')}!`;
-
-      if (focus === 'type') return `Aha, ${cleanName}! ${typePart}`;
-      if (focus === 'evo') return evoPart;
-      if (focus === 'strong') return strongPart;
-      if (focus === 'weak') return weakPart;
-
-      return `Schau mal, das ist ${cleanName}, ein ${p.category}! ${typePart} ${evoPart}`;
+      const typePart = typeNames.length === 1 ? `Es hat das Element ${typeNames[0]}.` : `Es verbindet ${typeNames[0]} und ${typeNames[1]}.`;
+      return `Das ist ${cleanName}, ein ${p.category}! ${typePart}`;
     }
   }
 
@@ -1057,7 +1031,7 @@
   }
 
   function speakText(text) {
-    if (!('speechSynthesis' in window)) return;
+    if (isMuted || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
@@ -1098,7 +1072,6 @@
     if (!quizMode) speakFullInfo();
   }
 
-  // Sauberer Mikrofon-Code aus Version 1 & 2 (versteht auch Antworten im Quiz!)
   function startListening() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -1137,9 +1110,12 @@
       stopAllSpeech();
       return;
     }
-    if (query.includes('quiz') || query.includes('ratespiel') || query.includes('wer ist')) {
+    if (query.includes('quiz') || query.includes('ratespiel')) {
       if (!quizMode) toggleQuizMode();
-      else startQuizRound();
+      return;
+    }
+    if (query.includes('schluss') || query.includes('beenden')) {
+      if (quizMode) toggleQuizMode();
       return;
     }
 
@@ -1151,33 +1127,22 @@
         break;
       }
     }
-    if (!matchedPokemon) {
-      for (const p of pokemonList) {
-        const prefix = p.name.toLowerCase().slice(0, 5);
-        if (prefix.length >= 4 && query.includes(prefix)) {
-          matchedPokemon = p;
-          break;
-        }
-      }
-    }
 
-    // Falls wir im Quiz-Modus sind, prüft das Mikrofon, ob das Kind den richtigen Namen gerufen hat!
     if (quizMode && !quizRevealed) {
       if (matchedPokemon && matchedPokemon.id === currentId) {
         checkQuizAnswer(currentId, null);
       } else {
-        const correctPoke = pokemonList.find(x => x.id === currentId);
-        speakText(`Noch nicht ganz! Tipp: Es ist ein ${TYPE_INFO[correctPoke.types[0]].de}-Pokémon!`);
+        speakText(`Noch nicht ganz!`);
       }
       return;
     }
 
     const target = matchedPokemon || pokemonList.find(x => x.id === currentId);
     let focus = 'all';
-    if (query.includes('stark') || query.includes('gewinnt')) focus = 'strong';
-    else if (query.includes('schwach') || query.includes('vorsicht') || query.includes('angst')) focus = 'weak';
-    else if (query.includes('entwickel') || query.includes('wird aus') || query.includes('zu was')) focus = 'evo';
-    else if (query.includes('typ') || query.includes('element')) focus = 'type';
+    if (query.includes('stark')) focus = 'strong';
+    else if (query.includes('schwach') || query.includes('vorsicht')) focus = 'weak';
+    else if (query.includes('entwickel')) focus = 'evo';
+    else if (query.includes('typ')) focus = 'type';
 
     if (matchedPokemon) {
       selectPokemon(matchedPokemon.id, false);
@@ -1188,12 +1153,9 @@
       const txt = buildExplanationText(target, focus);
       document.getElementById('speech-bubble').innerText = txt;
       speakText(txt);
-    } else {
-      speakText('Sag mir einfach nochmal deutlich den Namen des Pokémon!');
     }
   }
 
-  // Einstellungen
   function populateVoiceDropdown() {
     const select = document.getElementById('voice-select');
     if (!select || !('speechSynthesis' in window)) return;
@@ -1232,4 +1194,3 @@
 </script>
 </body>
 </html>
-
