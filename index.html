@@ -10,7 +10,6 @@
   <meta name="apple-mobile-web-app-title" content="Pokédex">
   <title>Pokédex Gen 1–3 & Quiz</title>
 
-  <!-- Platzhalter-Icons & Manifest (werden beim Start automatisch als echtes 512x512 PNG für Android Chrome generiert!) -->
   <link rel="icon" id="dynamic-favicon" type="image/png">
   <link rel="apple-touch-icon" id="dynamic-apple-icon">
   <link rel="manifest" id="dynamic-manifest">
@@ -44,28 +43,26 @@
       height: 100dvh;
     }
 
-    /* Oberer Pokédex-Rahmen */
+    /* Oberer Pokédex-Rahmen (Höher & Kinderfreundlicher) */
     header {
       display: flex;
       align-items: center;
-      padding: 6px 8px;
+      justify-content: space-between;
+      padding: 10px 10px;
       background: var(--pokedex-red);
-      border-bottom: 3px solid var(--pokedex-dark);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.28);
+      border-bottom: 4px solid var(--pokedex-dark);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28);
       z-index: 10;
       gap: 6px;
-      overflow-x: auto;
       flex-shrink: 0;
-      scrollbar-width: none;
     }
-    header::-webkit-scrollbar { display: none; }
 
     .sensor-light {
-      width: 26px;
-      height: 26px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #b8e2ff, var(--blue-light), #004b76);
-      border: 2px solid #fff;
+      border: 3px solid #fff;
       flex-shrink: 0;
       box-shadow: 0 0 6px rgba(0,0,0,0.35);
     }
@@ -74,130 +71,76 @@
     }
     @keyframes pulseLight {
       from { box-shadow: 0 0 6px #fff; transform: scale(1); }
-      to { box-shadow: 0 0 16px #00ffff; transform: scale(1.1); }
+      to { box-shadow: 0 0 18px #00ffff; transform: scale(1.1); }
     }
 
-    /* Generationen-Buttons (#1 Kanto, #2 Johto, #3 Hoenn) */
+    /* Große Generationen-Buttons für Kinderfinger */
     .gen-bar {
       display: flex;
-      gap: 4px;
+      gap: 5px;
       background: rgba(0,0,0,0.28);
-      padding: 3px;
-      border-radius: 10px;
-      flex-shrink: 0;
+      padding: 4px;
+      border-radius: 14px;
+      flex: 1;
+      justify-content: center;
     }
     .gen-btn {
+      flex: 1;
       background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.45);
+      border: 1.5px solid rgba(255,255,255,0.45);
       color: #fff;
       font-weight: 900;
-      font-size: 0.74rem;
-      padding: 5px 8px;
-      border-radius: 7px;
+      font-size: 0.8rem;
+      padding: 8px 4px;
+      border-radius: 10px;
       cursor: pointer;
       white-space: nowrap;
+      text-align: center;
     }
+    .gen-btn:active { transform: scale(0.95); }
     .gen-btn.active {
       background: #ffcc00;
       color: #111;
       border-color: #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
     }
 
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-
-    /* Prominenter Quiz-Button links neben dem Lautsprecher */
+    /* Großer Quiz-Button oben rechts */
     .quiz-pill-btn {
       background: linear-gradient(135deg, #3b5bdb, #4c6ef5);
-      border: 2px solid #fff;
+      border: 2.5px solid #fff;
       color: #fff;
       font-weight: 900;
-      font-size: 0.8rem;
-      padding: 4px 10px;
-      border-radius: 14px;
+      font-size: 0.86rem;
+      padding: 7px 12px;
+      border-radius: 16px;
       cursor: pointer;
       display: flex;
       align-items: baseline;
       gap: 2px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.28);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
       flex-shrink: 0;
       white-space: nowrap;
     }
+    .quiz-pill-btn:active { transform: scale(0.95); }
     .quiz-pill-btn.quiz-active {
       background: linear-gradient(135deg, #e03131, #f03e3e);
       align-items: center;
-    }
-
-    .mode-switch {
-      display: flex;
-      background: rgba(0,0,0,0.3);
-      border-radius: 14px;
-      padding: 2px;
-    }
-    .mode-btn {
-      background: transparent;
-      border: none;
-      color: rgba(255,255,255,0.85);
-      font-weight: 800;
-      font-size: 0.74rem;
-      padding: 3px 6px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    .mode-btn.active {
-      background: #fff;
-      color: #111;
-    }
-
-    .icon-top-btn {
-      background: rgba(0,0,0,0.28);
-      border: 2px solid rgba(255,255,255,0.55);
-      color: #fff;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    /* Direkt-Installieren-Button (Erscheint automatisch, wenn Chrome die App-Installation bereitstellt) */
-    #install-app-btn {
-      display: none;
-      background: #4cd964;
-      color: #111;
-      border: 2px solid #fff;
-      font-weight: 900;
-      font-size: 0.72rem;
-      padding: 4px 8px;
-      border-radius: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
     }
 
     /* Hauptbildschirm */
     main {
       flex: 1;
       min-height: 0;
-      margin: 4px 8px;
+      margin: 6px 8px;
       background: var(--screen-bg);
-      border-radius: 12px;
+      border-radius: 14px;
       border: 4px solid #dcdcdc;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 8px;
+      padding: 8px 10px;
       overflow-y: auto;
       position: relative;
     }
@@ -213,9 +156,9 @@
       background: #e9ecef;
       border: 2px solid #ced4da;
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      font-size: 1.1rem;
+      width: 44px;
+      height: 44px;
+      font-size: 1.3rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -225,13 +168,13 @@
 
     .poke-title { text-align: center; }
     .poke-id-cat {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       color: #555;
       font-weight: 800;
       text-transform: uppercase;
     }
     .poke-name {
-      font-size: 1.35rem;
+      font-size: 1.5rem;
       font-weight: 900;
       margin: 0;
       color: #111;
@@ -241,8 +184,8 @@
     /* Bild & Direkt-Knöpfe */
     .poke-image-wrapper {
       position: relative;
-      width: 112px;
-      height: 112px;
+      width: 125px;
+      height: 125px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -251,7 +194,7 @@
     #poke-img {
       max-width: 100%;
       max-height: 100%;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.22));
+      filter: drop-shadow(0 5px 7px rgba(0,0,0,0.22));
       cursor: pointer;
       transition: filter 0.3s, transform 0.2s;
     }
@@ -264,33 +207,33 @@
       position: absolute;
       bottom: 0;
       background: #fff;
-      border: 2px solid #222;
+      border: 2.5px solid #222;
       border-radius: 50%;
-      width: 34px;
-      height: 34px;
-      font-size: 1rem;
+      width: 40px;
+      height: 40px;
+      font-size: 1.15rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    #read-btn { left: -12px; background: #ffe066; }
-    #cry-btn { right: -12px; background: #d0ebff; }
+    #read-btn { left: -14px; background: #ffe066; }
+    #cry-btn { right: -14px; background: #d0ebff; }
 
     /* Sprechblase */
     .speech-bubble {
       width: 100%;
       background: #fff;
       border: 2px solid #dee2e6;
-      border-radius: 10px;
-      padding: 5px 8px;
-      font-size: 0.78rem;
+      border-radius: 12px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
       font-weight: 700;
       color: #222;
       text-align: center;
       line-height: 1.25;
-      min-height: 32px;
+      min-height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -301,23 +244,23 @@
     #quiz-options {
       display: none;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 8px;
       width: 100%;
       margin-top: 4px;
     }
     .quiz-choice-btn {
       background: #fff;
-      border: 2px solid #339af0;
-      border-radius: 10px;
-      padding: 9px 6px;
-      font-size: 0.88rem;
+      border: 2.5px solid #339af0;
+      border-radius: 12px;
+      padding: 12px 6px;
+      font-size: 0.95rem;
       font-weight: 900;
       color: #111;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
     .quiz-choice-btn.correct { background: #51cf66; color: #fff; border-color: #2b8a3e; }
@@ -326,17 +269,17 @@
     /* Element-Typen */
     .types-container {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       justify-content: center;
       flex-wrap: wrap;
       flex-shrink: 0;
     }
     .type-badge {
-      padding: 2px 10px;
+      padding: 3px 12px;
       border-radius: 14px;
       color: white;
       font-weight: 800;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -348,13 +291,13 @@
     .battle-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 5px;
+      gap: 6px;
       width: 100%;
       flex-shrink: 0;
     }
     .battle-card {
-      border-radius: 8px;
-      padding: 4px;
+      border-radius: 10px;
+      padding: 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -364,10 +307,10 @@
     .battle-card.strong { background: #e6fcf5; border-color: #20c997; }
     .battle-card.weak { background: #fff4e6; border-color: #fd7e14; }
     .battle-title {
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 900;
       text-transform: uppercase;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
     .battle-card.strong .battle-title { color: #087f5b; }
     .battle-card.weak .battle-title { color: #d9480f; }
@@ -378,8 +321,8 @@
       justify-content: center;
     }
     .mini-badge {
-      font-size: 0.62rem;
-      padding: 1px 5px;
+      font-size: 0.65rem;
+      padding: 2px 6px;
       border-radius: 6px;
       color: #fff;
       font-weight: 800;
@@ -389,23 +332,23 @@
     .evo-section {
       width: 100%;
       background: #e9ecef;
-      border-radius: 8px;
-      padding: 4px;
+      border-radius: 10px;
+      padding: 5px;
       flex-shrink: 0;
     }
     .evo-title {
-      font-size: 0.62rem;
+      font-size: 0.64rem;
       text-transform: uppercase;
       color: #495057;
       font-weight: 800;
       text-align: center;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
     .evo-chain {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
       flex-wrap: wrap;
     }
     .evo-item {
@@ -413,47 +356,49 @@
       flex-direction: column;
       align-items: center;
       background: white;
-      padding: 2px 5px;
-      border-radius: 6px;
+      padding: 3px 6px;
+      border-radius: 8px;
       border: 2px solid transparent;
       cursor: pointer;
-      min-width: 48px;
+      min-width: 52px;
     }
     .evo-item.active { border-color: var(--pokedex-red); background: #fff5f5; }
-    .evo-item img { width: 28px; height: 28px; object-fit: contain; }
-    .evo-item span { font-size: 0.6rem; font-weight: 800; }
-    .evo-arrow { font-size: 0.75rem; color: #868e96; font-weight: bold; }
+    .evo-item img { width: 32px; height: 32px; object-fit: contain; }
+    .evo-item span { font-size: 0.64rem; font-weight: 800; }
+    .evo-arrow { font-size: 0.8rem; color: #868e96; font-weight: bold; }
 
-    /* Untere Leiste */
+    /* Untere Leiste (Höher & Griffiger für Kinderfinger) */
     footer {
-      padding: 4px 8px 6px 8px;
+      padding: 6px 8px 10px 8px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 7px;
       background: var(--pokedex-red);
+      border-top: 3px solid var(--pokedex-dark);
       flex-shrink: 0;
     }
     .controls-row {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       align-items: center;
     }
     #mic-btn {
       flex: 1;
       background: #ffcc00;
       color: #111;
-      border: 2px solid #fff;
-      border-radius: 24px;
-      padding: 7px 10px;
-      font-size: 0.9rem;
+      border: 2.5px solid #fff;
+      border-radius: 28px;
+      padding: 11px 12px;
+      font-size: 1rem;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28);
     }
+    #mic-btn:active { transform: scale(0.97); }
     #mic-btn.listening {
       background: #4cd964;
       color: white;
@@ -466,15 +411,16 @@
     #stop-btn {
       background: #495057;
       color: #fff;
-      border: 2px solid #fff;
-      border-radius: 20px;
-      padding: 7px 10px;
-      font-size: 0.8rem;
+      border: 2.5px solid #fff;
+      border-radius: 26px;
+      padding: 11px 13px;
+      font-size: 0.9rem;
       font-weight: 900;
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.22);
     }
     #stop-btn.active-sound {
       background: #ff922b;
@@ -483,47 +429,66 @@
     #random-btn {
       background: #28aafd;
       color: white;
-      border: 2px solid #fff;
+      border: 2.5px solid #fff;
       border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 1.1rem;
+      width: 46px;
+      height: 46px;
+      font-size: 1.3rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.22);
+    }
+    /* Dezenter Drei-Striche-Menü-Button unten rechts */
+    #menu-btn {
+      background: rgba(0,0,0,0.28);
+      color: rgba(255,255,255,0.9);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 12px;
+      width: 38px;
+      height: 46px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
+    /* Größere Pokémon-Auswahlleiste unten */
     .strip-wrapper {
-      background: rgba(0,0,0,0.25);
-      border-radius: 8px;
-      padding: 3px;
+      background: rgba(0,0,0,0.28);
+      border-radius: 12px;
+      padding: 5px;
       overflow-x: auto;
       display: flex;
-      gap: 3px;
+      gap: 5px;
       scrollbar-width: none;
     }
     .strip-wrapper::-webkit-scrollbar { display: none; }
     .strip-thumb {
       flex: 0 0 auto;
-      width: 38px;
-      height: 38px;
-      background: rgba(255,255,255,0.92);
-      border-radius: 6px;
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.94);
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      border: 2px solid transparent;
+      border: 2.5px solid transparent;
     }
     .strip-thumb.selected {
       border-color: #ffcc00;
       background: #fff;
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
-    .strip-thumb img { width: 30px; height: 30px; }
+    .strip-thumb img { width: 40px; height: 40px; }
 
-    /* Modal-Fenster */
+    /* Modal-Fenster (Drei-Striche-Menü) */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -546,18 +511,42 @@
     .setting-group {
       margin-bottom: 10px;
       background: #f1f3f5;
-      padding: 9px;
-      border-radius: 10px;
+      padding: 10px;
+      border-radius: 12px;
     }
-    .setting-group label { display: block; font-weight: 800; margin-bottom: 4px; font-size: 0.8rem; }
-    .setting-group select, .setting-group input { width: 100%; padding: 5px; }
+    .setting-group label { display: block; font-weight: 800; margin-bottom: 6px; font-size: 0.82rem; color: #333; }
+    .setting-group select, .setting-group input { width: 100%; padding: 6px; }
+    .menu-toggle-row {
+      display: flex;
+      gap: 8px;
+    }
+    .menu-choice-btn {
+      flex: 1;
+      padding: 9px 8px;
+      border-radius: 10px;
+      border: 2px solid #ced4da;
+      background: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .menu-choice-btn.active {
+      border-color: #dc0a2d;
+      background: #fff5f5;
+      color: #dc0a2d;
+    }
     .btn-primary {
       background: #dc0a2d;
       color: #fff;
       border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
       font-weight: 800;
+      font-size: 0.95rem;
       cursor: pointer;
     }
   </style>
@@ -567,35 +556,19 @@
   <header>
     <div class="sensor-light" id="sensor-light"></div>
 
-    <!-- Generationen 1 bis 3 Buttons -->
+    <!-- Generationen 1 bis 3 Buttons (Größer & Zentriert) -->
     <div class="gen-bar">
       <button class="gen-btn active" id="gen-1" onclick="jumpToGen(1, 1)">#1 Kanto</button>
       <button class="gen-btn" id="gen-2" onclick="jumpToGen(2, 152)">#2 Johto</button>
       <button class="gen-btn" id="gen-3" onclick="jumpToGen(3, 252)">#3 Hoenn</button>
     </div>
 
-    <div class="header-controls">
-      <!-- Erscheint automatisch auf Android Chrome, sobald die PWA-Installation bereit ist -->
-      <button id="install-app-btn" onclick="triggerAppInstall()">📲 App installieren</button>
-
-      <!-- Prominenter Quiz-Button links neben dem Lautsprecher -->
-      <button class="quiz-pill-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Quiz: Wer ist dieses Pokémon?">
-        <span style="font-size: 1.15rem; font-weight:900; color:#fff;">?</span>
-        <span style="font-size: 0.9rem; font-weight:800; color:#fff;">?</span>
-        <span style="font-size: 0.72rem; font-weight:700; color:#fff;">? Quiz</span>
-      </button>
-
-      <!-- Stumm / Laut Schalter -->
-      <button class="icon-top-btn" id="mute-toggle-btn" onclick="toggleMute()" title="Ton An / Aus">🔊</button>
-
-      <!-- Stimmen-Modus: Dexter vs. Prof. Eich -->
-      <div class="mode-switch">
-        <button class="mode-btn active" id="mode-dexter" onclick="setPersona('dexter')">🤖</button>
-        <button class="mode-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬</button>
-      </div>
-
-      <button class="icon-top-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
-    </div>
+    <!-- Prominenter Quiz-Button -->
+    <button class="quiz-pill-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Quiz: Wer ist dieses Pokémon?">
+      <span style="font-size: 1.2rem; font-weight:900; color:#fff;">?</span>
+      <span style="font-size: 0.95rem; font-weight:800; color:#fff;">?</span>
+      <span style="font-size: 0.76rem; font-weight:700; color:#fff;">? Quiz</span>
+    </button>
   </header>
 
   <main>
@@ -651,65 +624,76 @@
         <span>🤫</span><span>Stopp</span>
       </button>
       <button id="random-btn" onclick="pickRandomPokemon()" title="Zufälliges Pokémon">🎲</button>
+      <!-- Dezentes Drei-Striche-Menü für Eltern-Einstellungen -->
+      <button id="menu-btn" onclick="openSettings()" title="Menü & Einstellungen">☰</button>
     </div>
     <div class="strip-wrapper" id="pokemon-strip"></div>
   </footer>
 
-  <!-- Einstellungen Modal -->
+  <!-- Eltern-Menü (Drei-Striche-Menü ☰) -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-box">
-      <h3 style="margin:0 0 10px 0; color:#dc0a2d;">⚙️ Stimme & Tempo</h3>
+      <h3 style="margin:0 0 12px 0; color:#dc0a2d;">☰ Pokédex-Einstellungen</h3>
+
       <div class="setting-group">
-        <label for="voice-select">Stimme auswählen:</label>
+        <label>Sprecher & Ton:</label>
+        <div class="menu-toggle-row">
+          <button class="menu-choice-btn active" id="mode-dexter" onclick="setPersona('dexter')">🤖 Dexter</button>
+          <button class="menu-choice-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬 Prof. Eich</button>
+          <button class="menu-choice-btn" id="mute-toggle-btn" onclick="toggleMute()">🔊 Ton An</button>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label for="voice-select">System-Stimme auswählen:</label>
         <select id="voice-select" onchange="saveVoiceSettings()"></select>
       </div>
+
       <div class="setting-group">
-        <label for="speed-slider">Dexter Tempo: <span id="speed-val">1.25x</span></label>
+        <label for="speed-slider">Sprechtempo (Zackigkeit): <span id="speed-val">1.25x</span></label>
         <input type="range" id="speed-slider" min="0.9" max="1.6" step="0.05" value="1.25" oninput="updateSliders()">
       </div>
+
       <div class="setting-group">
         <label for="pitch-slider">Stimmhöhe: <span id="pitch-val">0.85</span></label>
         <input type="range" id="pitch-slider" min="0.5" max="1.2" step="0.05" value="0.85" oninput="updateSliders()">
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px;">
-        <button class="btn-primary" onclick="closeSettings()">Fertig</button>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <button id="install-app-btn" class="btn-primary" style="display:none; background:#2b8a3e;" onclick="triggerAppInstall()">📲 App installieren</button>
+        <button class="btn-primary" style="margin-left:auto;" onclick="closeSettings()">Fertig</button>
       </div>
     </div>
   </div>
 
 <script>
   // =========================================================================
-  // 1. ECHTER PWA-APP-INSTALLER AUS DER KANTO-VERSION (512x512 PNG + Manifest)
+  // 1. ECHTER PWA-APP-INSTALLER (512x512 PNG + Dynamisches Manifest)
   // =========================================================================
   let deferredInstallPrompt = null;
 
   function setupDynamicPWA() {
     try {
-      // Zeichnet ein echtes 512x512 PNG Pokéball-Icon (damit Chrome die App-Installation freischaltet)
       const canvas = document.createElement('canvas');
       canvas.width = 512;
       canvas.height = 512;
       const ctx = canvas.getContext('2d');
 
-      // Hintergrund (Abgerundetes Pokédex-Rot)
       ctx.fillStyle = '#dc0a2d';
       ctx.beginPath();
       ctx.arc(256, 256, 256, 0, Math.PI * 2);
       ctx.fill();
 
-      // Untere Hälfte Weiß
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(256, 256, 220, 0, Math.PI, false);
       ctx.fill();
 
-      // Obere Hälfte Rot
       ctx.fillStyle = '#ff1a1a';
       ctx.beginPath();
       ctx.arc(256, 256, 220, Math.PI, Math.PI * 2, false);
       ctx.fill();
 
-      // Äußerer schwarzer Ring & Mittelbalken
       ctx.lineWidth = 28;
       ctx.strokeStyle = '#1c1c1e';
       ctx.beginPath();
@@ -719,7 +703,6 @@
       ctx.fillStyle = '#1c1c1e';
       ctx.fillRect(36, 240, 440, 32);
 
-      // Mittelknopf
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(256, 256, 68, 0, Math.PI * 2);
@@ -731,7 +714,6 @@
       document.getElementById('dynamic-favicon').href = pngDataUrl;
       document.getElementById('dynamic-apple-icon').href = pngDataUrl;
 
-      // Erzeugt das Manifest mit der exakten aktuellen Adresse (wichtig für GitHub Pages Unterordner /Pokedex/)
       const startUrl = window.location.href.split('#')[0];
       const scopeUrl = startUrl.substring(0, startUrl.lastIndexOf('/') + 1);
 
@@ -923,8 +905,8 @@
   function toggleMute() {
     isMuted = !isMuted;
     const btn = document.getElementById('mute-toggle-btn');
-    btn.innerText = isMuted ? '🔇' : '🔊';
-    btn.style.borderColor = isMuted ? '#ff3b30' : 'rgba(255,255,255,0.55)';
+    btn.innerText = isMuted ? '🔇 Ton Aus' : '🔊 Ton An';
+    btn.classList.toggle('active', isMuted);
     if (isMuted) stopAllSpeech();
   }
 
@@ -1052,12 +1034,12 @@
     quizBtn.classList.toggle('quiz-active', quizMode);
 
     if (quizMode) {
-      quizBtn.innerHTML = `<span style="font-size:0.82rem; font-weight:900; color:#fff;">❌ Beenden</span>`;
+      quizBtn.innerHTML = `<span style="font-size:0.86rem; font-weight:900; color:#fff;">❌ Beenden</span>`;
     } else {
       quizBtn.innerHTML = `
-        <span style="font-size: 1.15rem; font-weight:900; color:#fff;">?</span>
-        <span style="font-size: 0.9rem; font-weight:800; color:#fff;">?</span>
-        <span style="font-size: 0.72rem; font-weight:700; color:#fff;">? Quiz</span>
+        <span style="font-size: 1.2rem; font-weight:900; color:#fff;">?</span>
+        <span style="font-size: 0.95rem; font-weight:800; color:#fff;">?</span>
+        <span style="font-size: 0.76rem; font-weight:700; color:#fff;">? Quiz</span>
       `;
     }
 
