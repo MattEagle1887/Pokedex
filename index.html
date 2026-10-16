@@ -43,12 +43,12 @@
       height: 100dvh;
     }
 
-    /* Oberer Pokédex-Rahmen (Höher & Kinderfreundlicher) */
+    /* Header */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 10px;
+      padding: 8px 10px;
       background: var(--pokedex-red);
       border-bottom: 4px solid var(--pokedex-dark);
       box-shadow: 0 3px 6px rgba(0,0,0,0.28);
@@ -56,13 +56,12 @@
       gap: 6px;
       flex-shrink: 0;
     }
-
     .sensor-light {
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #b8e2ff, var(--blue-light), #004b76);
-      border: 3px solid #fff;
+      border: 2px solid #fff;
       flex-shrink: 0;
       box-shadow: 0 0 6px rgba(0,0,0,0.35);
     }
@@ -71,16 +70,15 @@
     }
     @keyframes pulseLight {
       from { box-shadow: 0 0 6px #fff; transform: scale(1); }
-      to { box-shadow: 0 0 18px #00ffff; transform: scale(1.1); }
+      to { box-shadow: 0 0 16px #00ffff; transform: scale(1.1); }
     }
 
-    /* Große Generationen-Buttons für Kinderfinger */
     .gen-bar {
       display: flex;
-      gap: 5px;
+      gap: 4px;
       background: rgba(0,0,0,0.28);
-      padding: 4px;
-      border-radius: 14px;
+      padding: 3px;
+      border-radius: 12px;
       flex: 1;
       justify-content: center;
     }
@@ -90,14 +88,12 @@
       border: 1.5px solid rgba(255,255,255,0.45);
       color: #fff;
       font-weight: 900;
-      font-size: 0.8rem;
-      padding: 8px 4px;
-      border-radius: 10px;
+      font-size: 0.78rem;
+      padding: 6px 4px;
+      border-radius: 9px;
       cursor: pointer;
-      white-space: nowrap;
       text-align: center;
     }
-    .gen-btn:active { transform: scale(0.95); }
     .gen-btn.active {
       background: #ffcc00;
       color: #111;
@@ -105,34 +101,31 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.25);
     }
 
-    /* Großer Quiz-Button oben rechts */
     .quiz-pill-btn {
       background: linear-gradient(135deg, #3b5bdb, #4c6ef5);
       border: 2.5px solid #fff;
       color: #fff;
       font-weight: 900;
-      font-size: 0.86rem;
-      padding: 7px 12px;
-      border-radius: 16px;
+      font-size: 0.84rem;
+      padding: 6px 10px;
+      border-radius: 14px;
       cursor: pointer;
       display: flex;
       align-items: baseline;
       gap: 2px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.3);
       flex-shrink: 0;
-      white-space: nowrap;
     }
-    .quiz-pill-btn:active { transform: scale(0.95); }
     .quiz-pill-btn.quiz-active {
       background: linear-gradient(135deg, #e03131, #f03e3e);
       align-items: center;
     }
 
-    /* Hauptbildschirm */
+    /* Hauptbildschirm (Kompakt & ohne Weißraum) */
     main {
       flex: 1;
       min-height: 0;
-      margin: 6px 8px;
+      margin: 4px 8px;
       background: var(--screen-bg);
       border-radius: 14px;
       border: 4px solid #dcdcdc;
@@ -140,7 +133,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 10px;
+      padding: 6px 8px;
       overflow-y: auto;
       position: relative;
     }
@@ -156,111 +149,109 @@
       background: #e9ecef;
       border: 2px solid #ced4da;
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      font-size: 1.3rem;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
     }
-    .nav-btn:active { transform: scale(0.92); }
-
     .poke-title { text-align: center; }
     .poke-id-cat {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: #555;
       font-weight: 800;
       text-transform: uppercase;
     }
     .poke-name {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 900;
       margin: 0;
       color: #111;
-      line-height: 1.15;
+      line-height: 1.1;
     }
 
-    /* Bild & Direkt-Knöpfe */
+    /* RIESIGES Pokémon-Bild in der Mitte */
     .poke-image-wrapper {
       position: relative;
-      width: 125px;
-      height: 125px;
+      width: 160px;
+      height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      margin: 2px 0;
     }
     #poke-img {
       max-width: 100%;
       max-height: 100%;
-      filter: drop-shadow(0 5px 7px rgba(0,0,0,0.22));
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.25));
       cursor: pointer;
-      transition: filter 0.3s, transform 0.2s;
+      transition: transform 0.2s;
     }
-    #poke-img:active { transform: scale(1.06); }
+    #poke-img:active { transform: scale(1.05); }
     #poke-img.silhouette {
-      filter: brightness(0) drop-shadow(0 0 5px rgba(0,0,0,0.4));
+      filter: brightness(0) drop-shadow(0 0 6px rgba(0,0,0,0.4));
     }
 
-    .action-pill-btn {
+    /* Schrei-Button dezent an der rechten Seite des Bildes */
+    #cry-btn {
       position: absolute;
-      bottom: 0;
-      background: #fff;
-      border: 2.5px solid #222;
+      right: 0;
+      bottom: 10px;
+      background: #d0ebff;
+      border: 2px solid #222;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 1.15rem;
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    #read-btn { left: -14px; background: #ffe066; }
-    #cry-btn { right: -14px; background: #d0ebff; }
 
     /* Sprechblase */
     .speech-bubble {
       width: 100%;
       background: #fff;
       border: 2px solid #dee2e6;
-      border-radius: 12px;
-      padding: 6px 10px;
-      font-size: 0.82rem;
+      border-radius: 10px;
+      padding: 4px 8px;
+      font-size: 0.78rem;
       font-weight: 700;
       color: #222;
       text-align: center;
-      line-height: 1.25;
-      min-height: 36px;
+      line-height: 1.2;
+      min-height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    /* Quiz-Auswahlbuttons */
+    /* Quiz-Optionen */
     #quiz-options {
       display: none;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
-      margin-top: 4px;
     }
     .quiz-choice-btn {
       background: #fff;
-      border: 2.5px solid #339af0;
-      border-radius: 12px;
-      padding: 12px 6px;
-      font-size: 0.95rem;
+      border: 2px solid #339af0;
+      border-radius: 10px;
+      padding: 10px 6px;
+      font-size: 0.9rem;
       font-weight: 900;
       color: #111;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
     .quiz-choice-btn.correct { background: #51cf66; color: #fff; border-color: #2b8a3e; }
@@ -269,17 +260,17 @@
     /* Element-Typen */
     .types-container {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       justify-content: center;
       flex-wrap: wrap;
       flex-shrink: 0;
     }
     .type-badge {
-      padding: 3px 12px;
-      border-radius: 14px;
+      padding: 2px 10px;
+      border-radius: 12px;
       color: white;
       font-weight: 800;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -287,43 +278,40 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
-    /* Stark & Schwach Boxen */
-    .battle-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      width: 100%;
-      flex-shrink: 0;
-    }
-    .battle-card {
-      border-radius: 10px;
-      padding: 5px;
+    /* Minimalistische Stark & Schwach Leiste */
+    .battle-grid-mini {
       display: flex;
       flex-direction: column;
+      gap: 3px;
+      width: 100%;
+      background: #fff;
+      border: 1.5px solid #e9ecef;
+      border-radius: 8px;
+      padding: 4px 8px;
+      flex-shrink: 0;
+      font-size: 0.7rem;
+    }
+    .battle-row {
+      display: flex;
       align-items: center;
-      cursor: pointer;
-      border: 2px solid transparent;
+      gap: 6px;
     }
-    .battle-card.strong { background: #e6fcf5; border-color: #20c997; }
-    .battle-card.weak { background: #fff4e6; border-color: #fd7e14; }
-    .battle-title {
-      font-size: 0.68rem;
+    .battle-label {
       font-weight: 900;
+      width: 82px;
+      flex-shrink: 0;
+      font-size: 0.65rem;
       text-transform: uppercase;
-      margin-bottom: 3px;
     }
-    .battle-card.strong .battle-title { color: #087f5b; }
-    .battle-card.weak .battle-title { color: #d9480f; }
     .mini-badges {
       display: flex;
       flex-wrap: wrap;
       gap: 3px;
-      justify-content: center;
     }
     .mini-badge {
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 6px;
+      font-size: 0.62rem;
+      padding: 1px 5px;
+      border-radius: 5px;
       color: #fff;
       font-weight: 800;
     }
@@ -332,23 +320,23 @@
     .evo-section {
       width: 100%;
       background: #e9ecef;
-      border-radius: 10px;
-      padding: 5px;
+      border-radius: 8px;
+      padding: 3px;
       flex-shrink: 0;
     }
     .evo-title {
-      font-size: 0.64rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       color: #495057;
       font-weight: 800;
       text-align: center;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
     .evo-chain {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
       flex-wrap: wrap;
     }
     .evo-item {
@@ -356,23 +344,23 @@
       flex-direction: column;
       align-items: center;
       background: white;
-      padding: 3px 6px;
-      border-radius: 8px;
+      padding: 2px 5px;
+      border-radius: 6px;
       border: 2px solid transparent;
       cursor: pointer;
-      min-width: 52px;
+      min-width: 44px;
     }
     .evo-item.active { border-color: var(--pokedex-red); background: #fff5f5; }
-    .evo-item img { width: 32px; height: 32px; object-fit: contain; }
-    .evo-item span { font-size: 0.64rem; font-weight: 800; }
-    .evo-arrow { font-size: 0.8rem; color: #868e96; font-weight: bold; }
+    .evo-item img { width: 26px; height: 26px; object-fit: contain; }
+    .evo-item span { font-size: 0.58rem; font-weight: 800; }
+    .evo-arrow { font-size: 0.7rem; color: #868e96; font-weight: bold; }
 
-    /* Untere Leiste (Höher & Griffiger für Kinderfinger) */
+    /* Untere Leiste */
     footer {
-      padding: 6px 8px 10px 8px;
+      padding: 6px 8px 8px 8px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 5px;
       background: var(--pokedex-red);
       border-top: 3px solid var(--pokedex-dark);
       flex-shrink: 0;
@@ -387,18 +375,17 @@
       background: #ffcc00;
       color: #111;
       border: 2.5px solid #fff;
-      border-radius: 28px;
-      padding: 11px 12px;
-      font-size: 1rem;
+      border-radius: 26px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.28);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.25);
     }
-    #mic-btn:active { transform: scale(0.97); }
     #mic-btn.listening {
       background: #4cd964;
       color: white;
@@ -412,13 +399,13 @@
       background: #495057;
       color: #fff;
       border: 2.5px solid #fff;
-      border-radius: 26px;
-      padding: 11px 13px;
-      font-size: 0.9rem;
+      border-radius: 24px;
+      padding: 10px 12px;
+      font-size: 0.85rem;
       font-weight: 900;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       cursor: pointer;
       box-shadow: 0 3px 6px rgba(0,0,0,0.22);
     }
@@ -431,9 +418,9 @@
       color: white;
       border: 2.5px solid #fff;
       border-radius: 50%;
-      width: 46px;
-      height: 46px;
-      font-size: 1.3rem;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -441,15 +428,14 @@
       flex-shrink: 0;
       box-shadow: 0 3px 6px rgba(0,0,0,0.22);
     }
-    /* Dezenter Drei-Striche-Menü-Button unten rechts */
     #menu-btn {
       background: rgba(0,0,0,0.28);
       color: rgba(255,255,255,0.9);
       border: 2px solid rgba(255,255,255,0.5);
       border-radius: 12px;
       width: 38px;
-      height: 46px;
-      font-size: 1.25rem;
+      height: 44px;
+      font-size: 1.2rem;
       font-weight: 900;
       display: flex;
       align-items: center;
@@ -458,23 +444,22 @@
       flex-shrink: 0;
     }
 
-    /* Größere Pokémon-Auswahlleiste unten */
     .strip-wrapper {
       background: rgba(0,0,0,0.28);
-      border-radius: 12px;
-      padding: 5px;
+      border-radius: 10px;
+      padding: 4px;
       overflow-x: auto;
       display: flex;
-      gap: 5px;
+      gap: 4px;
       scrollbar-width: none;
     }
     .strip-wrapper::-webkit-scrollbar { display: none; }
     .strip-thumb {
       flex: 0 0 auto;
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       background: rgba(255,255,255,0.94);
-      border-radius: 9px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -486,9 +471,9 @@
       background: #fff;
       transform: scale(1.06);
     }
-    .strip-thumb img { width: 40px; height: 40px; }
+    .strip-thumb img { width: 36px; height: 36px; }
 
-    /* Modal-Fenster (Drei-Striche-Menü) */
+    /* Modal-Fenster */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -556,18 +541,16 @@
   <header>
     <div class="sensor-light" id="sensor-light"></div>
 
-    <!-- Generationen 1 bis 3 Buttons (Größer & Zentriert) -->
     <div class="gen-bar">
       <button class="gen-btn active" id="gen-1" onclick="jumpToGen(1, 1)">#1 Kanto</button>
       <button class="gen-btn" id="gen-2" onclick="jumpToGen(2, 152)">#2 Johto</button>
       <button class="gen-btn" id="gen-3" onclick="jumpToGen(3, 252)">#3 Hoenn</button>
     </div>
 
-    <!-- Prominenter Quiz-Button -->
     <button class="quiz-pill-btn" id="quiz-toggle-btn" onclick="toggleQuizMode()" title="Quiz: Wer ist dieses Pokémon?">
-      <span style="font-size: 1.2rem; font-weight:900; color:#fff;">?</span>
-      <span style="font-size: 0.95rem; font-weight:800; color:#fff;">?</span>
-      <span style="font-size: 0.76rem; font-weight:700; color:#fff;">? Quiz</span>
+      <span style="font-size: 1.15rem; font-weight:900; color:#fff;">?</span>
+      <span style="font-size: 0.9rem; font-weight:800; color:#fff;">?</span>
+      <span style="font-size: 0.72rem; font-weight:700; color:#fff;">? Quiz</span>
     </button>
   </header>
 
@@ -581,28 +564,27 @@
       <button class="nav-btn" onclick="changePokemon(1)">➡️</button>
     </div>
 
+    <!-- RIESIGES Pokémon-Bild in der Mitte, Klick zum Vorlesen, Schrei-Button an der Seite -->
     <div class="poke-image-wrapper">
-      <button class="action-pill-btn" id="read-btn" onclick="speakFullInfo()" title="Vorlesen">🗣️</button>
-      <img id="poke-img" src="" alt="Pokémon" onclick="handleImageClick()">
-      <button class="action-pill-btn" id="cry-btn" onclick="playCry()" title="Pokémon-Ruf">🔊</button>
+      <img id="poke-img" src="" alt="Pokémon" onclick="speakFullInfo()" title="Tippen zum Vorlesen">
+      <button id="cry-btn" onclick="playCry()" title="Pokémon-Ruf">🔊</button>
     </div>
 
     <div class="speech-bubble" id="speech-bubble">Tippe auf ein Pokémon oder starte oben das Quiz!</div>
 
-    <!-- Quiz-Antwortknöpfe -->
     <div id="quiz-options"></div>
 
-    <!-- Normale Pokédex-Infos -->
-    <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:5px;">
+    <!-- Normale Pokédex-Infos mit kompakter, minimalistischer Stark/Schwach-Leiste -->
+    <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:4px;">
       <div class="types-container" id="poke-types" onclick="speakFocus('type')"></div>
 
-      <div class="battle-grid">
-        <div class="battle-card strong" onclick="speakFocus('strong')">
-          <div class="battle-title">💪 Stark gegen</div>
+      <div class="battle-grid-mini">
+        <div class="battle-row">
+          <div class="battle-label" style="color:#087f5b;">💪 Stark:</div>
           <div class="mini-badges" id="strong-badges"></div>
         </div>
-        <div class="battle-card weak" onclick="speakFocus('weak')">
-          <div class="battle-title">🛡️ Vorsicht vor</div>
+        <div class="battle-row">
+          <div class="battle-label" style="color:#d9480f;">🛡️ Vorsicht:</div>
           <div class="mini-badges" id="weak-badges"></div>
         </div>
       </div>
@@ -624,13 +606,11 @@
         <span>🤫</span><span>Stopp</span>
       </button>
       <button id="random-btn" onclick="pickRandomPokemon()" title="Zufälliges Pokémon">🎲</button>
-      <!-- Dezentes Drei-Striche-Menü für Eltern-Einstellungen -->
       <button id="menu-btn" onclick="openSettings()" title="Menü & Einstellungen">☰</button>
     </div>
     <div class="strip-wrapper" id="pokemon-strip"></div>
   </footer>
 
-  <!-- Eltern-Menü (Drei-Striche-Menü ☰) -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-box">
       <h3 style="margin:0 0 12px 0; color:#dc0a2d;">☰ Pokédex-Einstellungen</h3>
@@ -639,7 +619,7 @@
         <label>Sprecher & Ton:</label>
         <div class="menu-toggle-row">
           <button class="menu-choice-btn active" id="mode-dexter" onclick="setPersona('dexter')">🤖 Dexter</button>
-          <button class="menu-choice-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬 Prof. Eich</button>
+          <button class="menu-choice-btn" id="mode-oak" onclick="setPersona('oak')">👨‍🔬 Eich</button>
           <button class="menu-choice-btn" id="mute-toggle-btn" onclick="toggleMute()">🔊 Ton An</button>
         </div>
       </div>
@@ -667,9 +647,6 @@
   </div>
 
 <script>
-  // =========================================================================
-  // 1. ECHTER PWA-APP-INSTALLER (512x512 PNG + Dynamisches Manifest)
-  // =========================================================================
   let deferredInstallPrompt = null;
 
   function setupDynamicPWA() {
@@ -753,9 +730,6 @@
     document.getElementById('install-app-btn').style.display = 'none';
   }
 
-  // =========================================================================
-  // 2. POKÉDEX DATEN & FUNKTIONEN (GEN 1 - 3)
-  // =========================================================================
   const TYPE_INFO = {
     normal:   { de: 'Normal',   emoji: '⭐', color: '#A8A77A', strong: [], weak: ['fighting'], immune: ['ghost'], resist: [] },
     fire:     { de: 'Feuer',    emoji: '🔥', color: '#EE8130', strong: ['grass','ice','bug','steel'], weak: ['water','ground','rock'], immune: [], resist: ['fire','grass','ice','bug','steel','fairy'] },
@@ -904,9 +878,8 @@
 
   function toggleMute() {
     isMuted = !isMuted;
-    const btn = document.getElementById('mute-toggle-btn');
-    btn.innerText = isMuted ? '🔇 Ton Aus' : '🔊 Ton An';
-    btn.classList.toggle('active', isMuted);
+    document.getElementById('mute-toggle-btn').classList.toggle('active', isMuted);
+    document.getElementById('mute-toggle-btn').innerText = isMuted ? '🔇 Ton Aus' : '🔊 Ton An';
     if (isMuted) stopAllSpeech();
   }
 
@@ -978,7 +951,7 @@
     weakContainer.innerHTML = '';
 
     if (strong.length === 0) {
-      strongContainer.innerHTML = `<span style="font-size:0.65rem;color:#555;font-weight:bold;">Normal stark</span>`;
+      strongContainer.innerHTML = `<span style="font-size:0.65rem;color:#555;">Keine</span>`;
     } else {
       strong.forEach(t => {
         const info = TYPE_INFO[t];
@@ -990,14 +963,18 @@
       });
     }
 
-    weak.forEach(t => {
-      const info = TYPE_INFO[t];
-      const b = document.createElement('span');
-      b.className = 'mini-badge';
-      b.style.backgroundColor = info.color;
-      b.innerHTML = `${info.emoji} ${info.de}`;
-      weakContainer.appendChild(b);
-    });
+    if (weak.length === 0) {
+      weakContainer.innerHTML = `<span style="font-size:0.65rem;color:#555;">Keine</span>`;
+    } else {
+      weak.forEach(t => {
+        const info = TYPE_INFO[t];
+        const b = document.createElement('span');
+        b.className = 'mini-badge';
+        b.style.backgroundColor = info.color;
+        b.innerHTML = `${info.emoji} ${info.de}`;
+        weakContainer.appendChild(b);
+      });
+    }
 
     const evoContainer = document.getElementById('evo-chain');
     evoContainer.innerHTML = '';
@@ -1037,9 +1014,9 @@
       quizBtn.innerHTML = `<span style="font-size:0.86rem; font-weight:900; color:#fff;">❌ Beenden</span>`;
     } else {
       quizBtn.innerHTML = `
-        <span style="font-size: 1.2rem; font-weight:900; color:#fff;">?</span>
-        <span style="font-size: 0.95rem; font-weight:800; color:#fff;">?</span>
-        <span style="font-size: 0.76rem; font-weight:700; color:#fff;">? Quiz</span>
+        <span style="font-size: 1.15rem; font-weight:900; color:#fff;">?</span>
+        <span style="font-size: 0.9rem; font-weight:800; color:#fff;">?</span>
+        <span style="font-size: 0.72rem; font-weight:700; color:#fff;">? Quiz</span>
       `;
     }
 
@@ -1113,15 +1090,6 @@
       const tryAgain = `Fast! Versuch es nochmal!`;
       document.getElementById('speech-bubble').innerText = tryAgain;
       speakText(tryAgain);
-    }
-  }
-
-  function handleImageClick() {
-    if (quizMode && !quizRevealed) {
-      const p = pokemonList.find(x => x.id === currentId);
-      speakText(`Tipp: Es hat den Typ ${TYPE_INFO[p.types[0]].de}!`);
-    } else {
-      speakFullInfo();
     }
   }
 
@@ -1339,7 +1307,7 @@
       `;
       document.body.appendChild(modal);
     } else {
-      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du über ${currentPoke.name} wissen?`;
+      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du wissen über ${currentPoke.name}?`;
       modal.style.display = 'flex';
     }
   }
