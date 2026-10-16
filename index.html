@@ -121,7 +121,7 @@
       align-items: center;
     }
 
-    /* Hauptbildschirm (Kompakt & ohne Weißraum) */
+    /* Hauptbildschirm (Minimaler Weißraum, maximaler Fokus) */
     main {
       flex: 1;
       min-height: 0;
@@ -133,7 +133,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 8px;
+      padding: 4px 8px;
       overflow-y: auto;
       position: relative;
     }
@@ -149,9 +149,9 @@
       background: #e9ecef;
       border: 2px solid #ced4da;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 1.2rem;
+      width: 38px;
+      height: 38px;
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -159,58 +159,40 @@
     }
     .poke-title { text-align: center; }
     .poke-id-cat {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: #555;
       font-weight: 800;
       text-transform: uppercase;
     }
     .poke-name {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 900;
       margin: 0;
       color: #111;
       line-height: 1.1;
     }
 
-    /* RIESIGES Pokémon-Bild in der Mitte */
+    /* RIESIGES RIESIGES Pokémon-Bild */
     .poke-image-wrapper {
       position: relative;
-      width: 160px;
-      height: 150px;
+      width: 190px;
+      height: 180px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin: 2px 0;
+      margin: 0;
     }
     #poke-img {
       max-width: 100%;
       max-height: 100%;
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.25));
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.28));
       cursor: pointer;
       transition: transform 0.2s;
     }
     #poke-img:active { transform: scale(1.05); }
     #poke-img.silhouette {
       filter: brightness(0) drop-shadow(0 0 6px rgba(0,0,0,0.4));
-    }
-
-    /* Schrei-Button dezent an der rechten Seite des Bildes */
-    #cry-btn {
-      position: absolute;
-      right: 0;
-      bottom: 10px;
-      background: #d0ebff;
-      border: 2px solid #222;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     /* Sprechblase */
@@ -220,12 +202,12 @@
       border: 2px solid #dee2e6;
       border-radius: 10px;
       padding: 4px 8px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #222;
       text-align: center;
       line-height: 1.2;
-      min-height: 28px;
+      min-height: 26px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -270,7 +252,7 @@
       border-radius: 12px;
       color: white;
       font-weight: 800;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -278,16 +260,16 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
-    /* Minimalistische Stark & Schwach Leiste */
+    /* Stark & Vorsicht mit hellgrauer Trennlinie */
     .battle-grid-mini {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
       width: 100%;
       background: #fff;
       border: 1.5px solid #e9ecef;
       border-radius: 8px;
-      padding: 4px 8px;
+      padding: 5px 8px;
       flex-shrink: 0;
       font-size: 0.7rem;
     }
@@ -296,9 +278,15 @@
       align-items: center;
       gap: 6px;
     }
+    .battle-divider {
+      width: 100%;
+      height: 1px;
+      background-color: #ced4da;
+      margin: 1px 0;
+    }
     .battle-label {
       font-weight: 900;
-      width: 82px;
+      width: 76px;
       flex-shrink: 0;
       font-size: 0.65rem;
       text-transform: uppercase;
@@ -309,7 +297,7 @@
       gap: 3px;
     }
     .mini-badge {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       padding: 1px 5px;
       border-radius: 5px;
       color: #fff;
@@ -325,7 +313,7 @@
       flex-shrink: 0;
     }
     .evo-title {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       text-transform: uppercase;
       color: #495057;
       font-weight: 800;
@@ -348,12 +336,12 @@
       border-radius: 6px;
       border: 2px solid transparent;
       cursor: pointer;
-      min-width: 44px;
+      min-width: 42px;
     }
     .evo-item.active { border-color: var(--pokedex-red); background: #fff5f5; }
-    .evo-item img { width: 26px; height: 26px; object-fit: contain; }
-    .evo-item span { font-size: 0.58rem; font-weight: 800; }
-    .evo-arrow { font-size: 0.7rem; color: #868e96; font-weight: bold; }
+    .evo-item img { width: 24px; height: 24px; object-fit: contain; }
+    .evo-item span { font-size: 0.55rem; font-weight: 800; }
+    .evo-arrow { font-size: 0.65rem; color: #868e96; font-weight: bold; }
 
     /* Untere Leiste */
     footer {
@@ -564,17 +552,16 @@
       <button class="nav-btn" onclick="changePokemon(1)">➡️</button>
     </div>
 
-    <!-- RIESIGES Pokémon-Bild in der Mitte, Klick zum Vorlesen, Schrei-Button an der Seite -->
+    <!-- RIESIGES Pokémon-Bild in der Mitte (Klick zum Vorlesen, kein Schrei-Button mehr) -->
     <div class="poke-image-wrapper">
       <img id="poke-img" src="" alt="Pokémon" onclick="speakFullInfo()" title="Tippen zum Vorlesen">
-      <button id="cry-btn" onclick="playCry()" title="Pokémon-Ruf">🔊</button>
     </div>
 
     <div class="speech-bubble" id="speech-bubble">Tippe auf ein Pokémon oder starte oben das Quiz!</div>
 
     <div id="quiz-options"></div>
 
-    <!-- Normale Pokédex-Infos mit kompakter, minimalistischer Stark/Schwach-Leiste -->
+    <!-- Normale Pokédex-Infos mit minimalistischer Stark/Schwach-Leiste & Trennlinie -->
     <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:4px;">
       <div class="types-container" id="poke-types" onclick="speakFocus('type')"></div>
 
@@ -583,6 +570,7 @@
           <div class="battle-label" style="color:#087f5b;">💪 Stark:</div>
           <div class="mini-badges" id="strong-badges"></div>
         </div>
+        <div class="battle-divider"></div>
         <div class="battle-row">
           <div class="battle-label" style="color:#d9480f;">🛡️ Vorsicht:</div>
           <div class="mini-badges" id="weak-badges"></div>
@@ -1128,19 +1116,6 @@
     setSoundActiveUI(false);
   }
 
-  function playCry() {
-    if (isMuted) return;
-    const p = pokemonList.find(x => x.id === currentId);
-    if (!p) return;
-    stopAllSpeech();
-    currentAudio = new Audio(p.cry);
-    currentAudio.volume = 0.75;
-    setSoundActiveUI(true);
-    currentAudio.onended = () => setSoundActiveUI(false);
-    currentAudio.onerror = () => setSoundActiveUI(false);
-    currentAudio.play().catch(() => setSoundActiveUI(false));
-  }
-
   function buildExplanationText(p, focus = 'all') {
     const cleanName = p.name.replace('♀', ' weiblich').replace('♂', ' männlich');
     const typeNames = p.types.map(t => TYPE_INFO[t] ? TYPE_INFO[t].de : t);
@@ -1307,7 +1282,7 @@
       `;
       document.body.appendChild(modal);
     } else {
-      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du wissen über ${currentPoke.name}?`;
+      document.getElementById('quick-modal-title').innerText = `🎯 Was möchtest du über ${currentPoke.name} wissen?`;
       modal.style.display = 'flex';
     }
   }
