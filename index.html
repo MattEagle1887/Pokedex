@@ -6,7 +6,9 @@
   <meta name="theme-color" content="#dc0a2d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Pokédex Gen 1–3 & Quiz</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23fff' stroke='%23222' stroke-width='8'/%3E%3Cpath d='M 4 50 A 46 46 0 0 1 96 50 Z' fill='%23dc0a2d'/%3E%3Crect x='4' y='46' width='92' height='8' fill='%23222'/%3E%3Ccircle cx='50' cy='50' r='16' fill='%23fff' stroke='%23222' stroke-width='8'/%3E%3C/svg%3E">
   <style>
     :root {
       --pokedex-red: #dc0a2d;
@@ -27,8 +29,8 @@
       color: #1c1c1e;
       display: flex;
       flex-direction: column;
+      height: 100vh;
       height: 100dvh;
-      max-height: 100dvh;
       overflow: hidden;
     }
 
@@ -109,27 +111,6 @@
     }
     .quiz-pill-btn.quiz-active {
       background: linear-gradient(135deg, #e03131, #f03e3e);
-    }
-
-    .mode-switch {
-      display: flex;
-      background: rgba(0,0,0,0.3);
-      border-radius: 14px;
-      padding: 2px;
-    }
-    .mode-btn {
-      background: transparent;
-      border: none;
-      color: rgba(255,255,255,0.85);
-      font-weight: 800;
-      font-size: 0.7rem;
-      padding: 3px 6px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    .mode-btn.active {
-      background: #fff;
-      color: #111;
     }
 
     .icon-top-btn {
@@ -490,6 +471,9 @@
       cursor: pointer;
     }
   </style>
+
+  <!-- PWA Manifest direkt im Code eingebettet für perfekte Handy-Installation -->
+  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Pok%C3%A9dex%20Gen%201-3%22%2C%22short_name%22%3A%22Pok%C3%A9dex%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23dc0a2d%22%2C%22theme_color%22%3A%22%23dc0a2d%22%2C%22icons%22%3A%5B%5D%7D">
 </head>
 <body>
 
@@ -617,7 +601,6 @@
     fairy:    { de: 'Fee',      emoji: '✨', color: '#D685AD', strong: ['fighting','dragon','dark'], weak: ['poison','steel'], immune: ['dragon'], resist: ['fighting','bug','dark'] }
   };
 
-  // Notfall-Basispaket für Gen 1 (sofort da, wartet nicht auf Online-API)
   const OFFLINE_KANTO = [
     [1,"Bisasam","Samen-Pokémon",["grass","poison"],0,1,"Es trägt von Geburt an einen Samen auf dem Rücken."],
     [2,"Bisaknosp","Samen-Pokémon",["grass","poison"],1,1,"Wenn die Knospe duftet, blüht sie bald auf."],
@@ -655,7 +638,6 @@
   let dexterSpeed = parseFloat(localStorage.getItem('pokedex_speed') || '1.25');
   let customPitch = parseFloat(localStorage.getItem('pokedex_pitch') || '0.85');
 
-  // Lädt im Hintergrund die echten 386 Pokémon nach, falls online
   async function initPokedex() {
     startApp();
     try {
@@ -1066,7 +1048,6 @@
     if (!quizMode) speakFullInfo();
   }
 
-  // Öffnet direkt das Touch-Frage-Menü (perfekt für das Tablet ohne Google-Dienste)
   function startListening() {
     openQuickQueryModal();
   }
@@ -1132,7 +1113,7 @@
     localStorage.setItem('pokedex_pitch', customPitch);
   }
   function saveVoiceSettings() {
-    selectedVoiceURI = document.getElementById('voice-select').value;
+    selectedVoiceURI = document.getElementById('voice-select'].value;
     localStorage.setItem('pokedex_voice_uri', selectedVoiceURI);
   }
   if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = populateVoiceDropdown;
