@@ -8,7 +8,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Pokédex Gen 1–3 & Quiz</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23fff' stroke='%23222' stroke-width='8'/%3E%3Cpath d='M 4 50 A 46 46 0 0 1 96 50 Z' fill='%23dc0a2d'/%3E%3Crect x='4' y='46' width='92' height='8' fill='%23222'/%3E%3Ccircle cx='50' cy='50' r='16' fill='%23fff' stroke='%23222' stroke-width='8'/%3E%3C/svg%3E">
   <style>
     :root {
       --pokedex-red: #dc0a2d;
@@ -1047,8 +1046,46 @@
     if (!quizMode) speakFullInfo();
   }
 
+  // Intelligenter Mikrofon-Start: Nutzt auf dem Handy echte Spracheingabe, auf dem Tablet das Touch-Menü
   function startListening() {
-    openQuickQueryModal();
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      openQuickQueryModal();
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'de-DE';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 3;
+
+      const micBtn = document.getElementById('mic-btn');
+      const micLabel = document.getElementById('mic-label');
+
+      recognition.onstart = () => {
+        micBtn.classList.add('listening');
+        micLabel.innerText = 'Ich höre zu...';
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        handleVoiceQuery(transcript);
+      };
+
+      recognition.onerror = () => {
+        openQuickQueryModal();
+      };
+
+      recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micLabel.innerText = 'Frag den Pokédex!';
+      };
+
+      recognition.start();
+    } catch (e) {
+      openQuickQueryModal();
+    }
   }
 
   function openQuickQueryModal() {
@@ -1081,6 +1118,57 @@
   function quickAsk(focusType) {
     document.getElementById('quick-query-modal').style.display = 'none';
     speakFocus(focusType);
+  }
+
+  function handleVoiceQuery(query) {
+    if (query.includes('stopp') || query.includes('leise') || query.includes('ruhe')) {
+      stopAllSpeech();
+      return;
+    }
+    if (query.includes('quiz') || query.includes('ratespiel')) {
+      if (!quizMode) toggleQuizMode();
+      return;
+    }
+    if (query.includes('schluss') || query.includes('beenden')) {
+      if (quizMode) toggleQuizMode();
+      return;
+    }
+
+    let matchedPokemon = null;
+    for (const p of pokemonList) {
+      const clean = p.name.toLowerCase().replace('♀', '').replace('♂', '');
+      if (query.includes(clean)) {
+        matchedPokemon = p;
+        break;
+      }
+    }
+
+    if (quizMode && !quizRevealed) {
+      if (matchedPokemon && matchedPokemon.id === currentId) {
+        checkQuizAnswer(currentId, null);
+      } else {
+        speakText(`Noch nicht ganz!`);
+      }
+      return;
+    }
+
+    const target = matchedPokemon || pokemonList.find(x => x.id === currentId);
+    let focus = 'all';
+    if (query.includes('stark')) focus = 'strong';
+    else if (query.includes('schwach') || query.includes('vorsicht')) focus = 'weak';
+    else if (query.includes('entwickel')) focus = 'evo';
+    else if (query.includes('typ')) focus = 'type';
+
+    if (matchedPokemon) {
+      selectPokemon(matchedPokemon.id, false);
+      const txt = buildExplanationText(matchedPokemon, focus);
+      document.getElementById('speech-bubble').innerText = txt;
+      speakText(txt);
+    } else if (focus !== 'all' && target) {
+      const txt = buildExplanationText(target, focus);
+      document.getElementById('speech-bubble').innerText = txt;
+      speakText(txt);
+    }
   }
 
   function populateVoiceDropdown() {
