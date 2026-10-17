@@ -121,7 +121,7 @@
       align-items: center;
     }
 
-    /* Hauptbildschirm (Maximaler Platz für das große Bild) */
+    /* Hauptbildschirm */
     main {
       flex: 1;
       min-height: 0;
@@ -133,8 +133,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 3px 8px;
-      overflow-y: auto;
+      padding: 6px 8px;
+      overflow: hidden;
       position: relative;
     }
 
@@ -145,48 +145,63 @@
       width: 100%;
       flex-shrink: 0;
     }
+    /* Deutlich größere Vorwärts- und Rückwärts-Pfeile für Kinderhände */
     .nav-btn {
       background: #e9ecef;
-      border: 2px solid #ced4da;
+      border: 3px solid #adb5bd;
       border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 1.1rem;
+      width: 54px;
+      height: 54px;
+      font-size: 1.55rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+      flex-shrink: 0;
     }
-    .poke-title { text-align: center; }
+    .nav-btn:active {
+      transform: scale(0.9);
+      background: #dee2e6;
+    }
+
+    .poke-title {
+      text-align: center;
+      padding: 0 4px;
+    }
     .poke-id-cat {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       color: #555;
       font-weight: 800;
       text-transform: uppercase;
     }
     .poke-name {
-      font-size: 1.25rem;
+      font-size: 1.55rem;
       font-weight: 900;
       margin: 0;
       color: #111;
       line-height: 1.1;
     }
 
-    /* RIESIGES, raumfüllendes Pokémon-Bild */
+    /* Raumfüllendes Pokémon-Bild (nutzt automatisch den gesamten freien Platz in der Mitte) */
     .poke-image-wrapper {
       position: relative;
-      width: 220px;
-      height: 205px;
+      flex: 1;
+      min-height: 120px;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
       margin: 2px 0;
+      overflow: hidden;
     }
     #poke-img {
-      max-width: 100%;
-      max-height: 100%;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.28));
+      width: 100%;
+      height: 100%;
+      max-width: 280px;
+      max-height: 260px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.26));
       cursor: pointer;
       transition: transform 0.2s;
     }
@@ -199,15 +214,17 @@
     #quiz-options {
       display: none;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 8px;
       width: 100%;
+      flex-shrink: 0;
+      padding-top: 4px;
     }
     .quiz-choice-btn {
       background: #fff;
-      border: 2px solid #339af0;
-      border-radius: 10px;
-      padding: 10px 6px;
-      font-size: 0.9rem;
+      border: 2.5px solid #339af0;
+      border-radius: 12px;
+      padding: 12px 6px;
+      font-size: 0.95rem;
       font-weight: 900;
       color: #111;
       cursor: pointer;
@@ -223,17 +240,17 @@
     /* Element-Typen */
     .types-container {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       justify-content: center;
       flex-wrap: wrap;
       flex-shrink: 0;
     }
     .type-badge {
-      padding: 2px 10px;
+      padding: 3px 12px;
       border-radius: 12px;
       color: white;
       font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -245,42 +262,42 @@
     .battle-grid-mini {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
       width: 100%;
       background: #fff;
-      border: 1.5px solid #e9ecef;
-      border-radius: 8px;
-      padding: 4px 8px;
+      border: 1.5px solid #dee2e6;
+      border-radius: 10px;
+      padding: 6px 8px;
       flex-shrink: 0;
-      font-size: 0.7rem;
     }
     .battle-row {
       display: flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
     }
     .battle-divider {
       width: 100%;
-      height: 1px;
-      background-color: #ced4da;
+      height: 1.5px;
+      background-color: #dee2e6;
       margin: 1px 0;
     }
     .battle-label {
       font-weight: 900;
-      width: 76px;
+      width: 78px;
       flex-shrink: 0;
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
     }
     .mini-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 3px;
+      gap: 4px;
     }
     .mini-badge {
-      font-size: 0.6rem;
-      padding: 1px 5px;
-      border-radius: 5px;
+      font-size: 0.64rem;
+      padding: 2px 6px;
+      border-radius: 6px;
       color: #fff;
       font-weight: 800;
     }
@@ -289,23 +306,23 @@
     .evo-section {
       width: 100%;
       background: #e9ecef;
-      border-radius: 8px;
-      padding: 2px;
+      border-radius: 10px;
+      padding: 4px 6px;
       flex-shrink: 0;
     }
     .evo-title {
-      font-size: 0.55rem;
+      font-size: 0.58rem;
       text-transform: uppercase;
       color: #495057;
       font-weight: 800;
       text-align: center;
-      margin-bottom: 1px;
+      margin-bottom: 2px;
     }
     .evo-chain {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
       flex-wrap: wrap;
     }
     .evo-item {
@@ -313,23 +330,23 @@
       flex-direction: column;
       align-items: center;
       background: white;
-      padding: 2px 4px;
-      border-radius: 6px;
+      padding: 3px 6px;
+      border-radius: 8px;
       border: 2px solid transparent;
       cursor: pointer;
-      min-width: 40px;
+      min-width: 50px;
     }
     .evo-item.active { border-color: var(--pokedex-red); background: #fff5f5; }
-    .evo-item img { width: 22px; height: 22px; object-fit: contain; }
-    .evo-item span { font-size: 0.52rem; font-weight: 800; }
-    .evo-arrow { font-size: 0.6rem; color: #868e96; font-weight: bold; }
+    .evo-item img { width: 30px; height: 30px; object-fit: contain; }
+    .evo-item span { font-size: 0.6rem; font-weight: 800; }
+    .evo-arrow { font-size: 0.75rem; color: #868e96; font-weight: bold; }
 
     /* Untere Leiste */
     footer {
       padding: 6px 8px 8px 8px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
       background: var(--pokedex-red);
       border-top: 3px solid var(--pokedex-dark);
       flex-shrink: 0;
@@ -346,7 +363,7 @@
       border: 2.5px solid #fff;
       border-radius: 26px;
       padding: 10px 12px;
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       font-weight: 900;
       display: flex;
       align-items: center;
@@ -370,7 +387,7 @@
       border: 2.5px solid #fff;
       border-radius: 24px;
       padding: 10px 12px;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 900;
       display: flex;
       align-items: center;
@@ -413,35 +430,40 @@
       flex-shrink: 0;
     }
 
-    /* Einheitliche, große HD-Vorschau in der Leiste unten */
+    /* Deutlich größere Pokémon-Kacheln in der unteren Leiste (ca. 5 sichtbar statt 8-9) */
     .strip-wrapper {
       background: rgba(0,0,0,0.28);
-      border-radius: 10px;
-      padding: 4px;
+      border-radius: 12px;
+      padding: 6px;
       overflow-x: auto;
       display: flex;
-      gap: 4px;
+      gap: 8px;
       scrollbar-width: none;
     }
     .strip-wrapper::-webkit-scrollbar { display: none; }
     .strip-thumb {
       flex: 0 0 auto;
-      width: 44px;
-      height: 44px;
-      background: rgba(255,255,255,0.94);
-      border-radius: 8px;
+      width: 64px;
+      height: 64px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      border: 2.5px solid transparent;
+      border: 3px solid transparent;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.18);
     }
     .strip-thumb.selected {
       border-color: #ffcc00;
       background: #fff;
-      transform: scale(1.06);
+      transform: scale(1.05);
     }
-    .strip-thumb img { width: 38px; height: 38px; object-fit: contain; }
+    .strip-thumb img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+    }
 
     /* Modal-Fenster */
     .modal-backdrop {
@@ -460,6 +482,8 @@
       padding: 16px;
       width: 100%;
       max-width: 390px;
+      max-height: 90vh;
+      overflow-y: auto;
       font-size: 0.9rem;
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
@@ -526,32 +550,32 @@
 
   <main>
     <div class="nav-row">
-      <button class="nav-btn" onclick="changePokemon(-1)">⬅️</button>
+      <button class="nav-btn" onclick="changePokemon(-1)" title="Zurück">⬅️</button>
       <div class="poke-title">
         <div class="poke-id-cat" id="poke-id">#001 • Samen-Pokémon</div>
         <h1 class="poke-name" id="poke-name">Bisasam</h1>
       </div>
-      <button class="nav-btn" onclick="changePokemon(1)">➡️</button>
+      <button class="nav-btn" onclick="changePokemon(1)" title="Weiter">➡️</button>
     </div>
 
-    <!-- RIESIGES, RAUMFÜLLENDES Pokémon-Bild (Klick zum Vorlesen) -->
+    <!-- Raumfüllendes Pokémon-Bild (Tippen zum Vorlesen) -->
     <div class="poke-image-wrapper">
-      <img id="poke-img" src="" alt="Pokémon" onclick="speakFullInfo()" title="Tippen zum Vorlesen">
+      <img id="poke-img" src="" alt="Pokémon" onclick="handleImageClick()" title="Tippen zum Vorlesen">
     </div>
 
     <div id="quiz-options"></div>
 
     <!-- Normale Pokédex-Infos mit Trennlinie -->
-    <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:4px;">
+    <div id="normal-info-area" style="width:100%; display:flex; flex-direction:column; gap:5px; flex-shrink:0;">
       <div class="types-container" id="poke-types" onclick="speakFocus('type')"></div>
 
       <div class="battle-grid-mini">
-        <div class="battle-row">
+        <div class="battle-row" onclick="speakFocus('strong')">
           <div class="battle-label" style="color:#087f5b;">💪 Stark:</div>
           <div class="mini-badges" id="strong-badges"></div>
         </div>
         <div class="battle-divider"></div>
-        <div class="battle-row">
+        <div class="battle-row" onclick="speakFocus('weak')">
           <div class="battle-label" style="color:#d9480f;">🛡️ Vorsicht:</div>
           <div class="mini-badges" id="weak-badges"></div>
         </div>
@@ -579,6 +603,7 @@
     <div class="strip-wrapper" id="pokemon-strip"></div>
   </footer>
 
+  <!-- Eltern-Menü (☰) -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-box">
       <h3 style="margin:0 0 12px 0; color:#dc0a2d;">☰ Pokédex-Einstellungen</h3>
@@ -605,6 +630,15 @@
       <div class="setting-group">
         <label for="pitch-slider">Stimmhöhe: <span id="pitch-val">0.85</span></label>
         <input type="range" id="pitch-slider" min="0.5" max="1.2" step="0.05" value="0.85" oninput="updateSliders()">
+      </div>
+
+      <!-- Eigene Aussprache-Hilfe für das aktuell ausgewählte Pokémon -->
+      <div class="setting-group">
+        <label for="custom-phonetic-input">Aussprache für <span id="phonetic-poke-name">dieses Pokémon</span> anpassen:</label>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="custom-phonetic-input" placeholder="z.B. Glu-rack oder Schiggi" style="flex:1; border:1px solid #ccc; border-radius:8px;">
+          <button class="btn-primary" style="padding:6px 10px; font-size:0.8rem;" onclick="saveCustomPhonetic()">🔊 Test & Speichern</button>
+        </div>
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
@@ -698,6 +732,240 @@
     document.getElementById('install-app-btn').style.display = 'none';
   }
 
+  // =========================================================================
+  // DEUTSCHES AUSSPRACHE-LEXIKON FÜR DIE SPRACHAUSGABE (Verhindert falsche Betonung)
+  // =========================================================================
+  const DEFAULT_PHONETICS = {
+    "Bisasam": "Bisa-sam",
+    "Bisaknosp": "Bisa-knosp",
+    "Bisaflor": "Bisa-flor",
+    "Glumanda": "Glu-manda",
+    "Glutexo": "Glu-texo",
+    "Glurak": "Glu-rack",
+    "Schiggy": "Schiggi",
+    "Schillok": "Schillock",
+    "Turtok": "Turtock",
+    "Raupy": "Raupi",
+    "Safcon": "aff-kon",
+    "Smettbo": "Smett-bo",
+    "Hornliu": "Horn-li-u",
+    "Bibor": "Bie-bor",
+    "Taubsi": "Taub-si",
+    "Tauboga": "Tau-boga",
+    "Tauboss": "Tau-boss",
+    "Rattfratz": "Ratt-fratz",
+    "Rattikarl": "Ratti-karl",
+    "Habitak": "Habi-tack",
+    "Ibitak": "Ibi-tack",
+    "Arbok": "Arbock",
+    "Pikachu": "Pika-tschu",
+    "Raichu": "Rei-tschu",
+    "Pichu": "Pi-tschu",
+    "Sandan": "Sann-dann",
+    "Sandamer": "Sanda-mer",
+    "Nidoran♀": "Nido-ran weiblich",
+    "Nidoran♂": "Nido-ran männlich",
+    "Nidoqueen": "Nido-kwien",
+    "Nidoking": "Nido-king",
+    "Piepi": "Pie-pi",
+    "Vulpix": "Wull-pix",
+    "Vulnona": "Wull-nona",
+    "Zubat": "Zu-batt",
+    "Golbat": "Goll-batt",
+    "Iksbat": "Iks-batt",
+    "Myrapla": "Mü-rapla",
+    "Duflor": "Du-flor",
+    "Giflor": "Gi-flor",
+    "Bluzuk": "Blu-zuck",
+    "Omot": "O-mott",
+    "Digda": "Dig-da",
+    "Digdri": "Dig-dri",
+    "Snobilikat": "Snobili-katt",
+    "Enton": "Enn-tonn",
+    "Entoron": "Ento-ronn",
+    "Menki": "Menn-ki",
+    "Rasaff": "Rass-aff",
+    "Fukano": "Fu-kano",
+    "Arkani": "Ar-kani",
+    "Quapsel": "Kwapp-sel",
+    "Quaputzi": "Kwa-putzi",
+    "Quappo": "Kwappo",
+    "Quaxo": "Kwackso",
+    "Kadabra": "Ka-dabra",
+    "Simsala": "Simm-sala",
+    "Machollo": "Ma-chollo",
+    "Maschock": "Ma-schock",
+    "Machomei": "Ma-chomei",
+    "Ultrigaria": "Ultri-garia",
+    "Sarzenia": "Sar-zenia",
+    "Tentacha": "Tenta-cha",
+    "Tentoxa": "Ten-toxa",
+    "Georok": "Ge-o-rock",
+    "Geowaz": "Ge-o-watz",
+    "Gallopa": "Galoppa",
+    "Flegmon": "Flegg-monn",
+    "Lahmus": "Lah-muss",
+    "Laschoking": "Lascho-king",
+    "Magnetilo": "Magne-tilo",
+    "Magneton": "Magne-tonn",
+    "Porenta": "Po-renta",
+    "Dodu": "Do-du",
+    "Dodri": "Do-dri",
+    "Jurob": "Ju-robb",
+    "Jugong": "Ju-gong",
+    "Sleima": "Slei-ma",
+    "Sleimok": "Slei-mock",
+    "Austos": "Aus-toss",
+    "Nebulak": "Nebu-lack",
+    "Alpollo": "Al-pollo",
+    "Gengar": "Geng-gar",
+    "Onix": "O-nix",
+    "Stahlos": "Stah-loss",
+    "Traumato": "Trau-mato",
+    "Hypno": "Hüp-no",
+    "Krabby": "Krabbi",
+    "Voltobal": "Wolto-ball",
+    "Lektrobal": "Lektro-ball",
+    "Owei": "O-wei",
+    "Kokowei": "Koko-wei",
+    "Tragosso": "Tra-gosso",
+    "Knogga": "Knog-ga",
+    "Kicklee": "Kick-lie",
+    "Nockchan": "Nock-tschan",
+    "Kapoera": "Kapo-era",
+    "Smogon": "Smo-gonn",
+    "Smogmog": "Smogg-mogg",
+    "Rihorn": "Rie-horn",
+    "Rizeros": "Rie-zeross",
+    "Chaneira": "Tscha-neira",
+    "Heiteira": "Hei-teira",
+    "Seeper": "See-per",
+    "Seemon": "See-monn",
+    "Seedraking": "See-dra-king",
+    "Sterndu": "Stern-du",
+    "Starmie": "Star-mie",
+    "Pantimos": "Panti-moss",
+    "Sichlor": "Sich-lor",
+    "Scherox": "Sche-rox",
+    "Elektek": "Elek-teck",
+    "Magmar": "Magg-mar",
+    "Tauros": "Tau-ross",
+    "Karpador": "Karpa-dor",
+    "Garados": "Gara-doss",
+    "Lapras": "La-prass",
+    "Evoli": "E-woli",
+    "Aquana": "A-kwana",
+    "Psiana": "Psi-ana",
+    "Nachtara": "Nach-tara",
+    "Porygon": "Pori-gonn",
+    "Porygon2": "Pori-gonn zwei",
+    "Amonitas": "Amo-nitas",
+    "Amoroso": "Amo-roso",
+    "Kabuto": "Ka-buto",
+    "Kabutops": "Kabu-tops",
+    "Aerodactyl": "A-ero-daktül",
+    "Relaxo": "Re-laxo",
+    "Arktos": "Ark-toss",
+    "Zapdos": "Zapp-doss",
+    "Lavados": "Lawa-doss",
+    "Dratini": "Dra-tini",
+    "Dragonir": "Drago-nier",
+    "Dragoran": "Drago-ran",
+    "Mewtu": "Mju-tu",
+    "Mew": "Mju",
+    "Endivie": "En-di-wie",
+    "Lorblatt": "Lor-blatt",
+    "Meganie": "Me-ga-nie",
+    "Feurigel": "Feu-rigel",
+    "Igelavar": "Ige-lawar",
+    "Tornupto": "Tor-nupto",
+    "Karnimani": "Karni-mani",
+    "Tyracroc": "Türa-krock",
+    "Impergator": "Imper-gator",
+    "Togepi": "Toge-pi",
+    "Togetic": "Toge-tick",
+    "Ampharos": "Amfa-ross",
+    "Marill": "Ma-rill",
+    "Azumarill": "Azu-marill",
+    "Mogelbaum": "Mogel-baum",
+    "Woingenau": "Wo-ingenau",
+    "Skorgla": "Skorg-la",
+    "Skaraborn": "Skara-born",
+    "Sniebel": "Snie-bel",
+    "Keifel": "Kei-fel",
+    "Hunduster": "Hunn-duster",
+    "Hundemon": "Hunde-monn",
+    "Phanpy": "Fann-pi",
+    "Donphan": "Donn-fann",
+    "Raikou": "Rei-kou",
+    "Entei": "Enn-tei",
+    "Suicune": "Su-i-kuhn",
+    "Larvitar": "Larwi-tar",
+    "Pupitar": "Pupi-tar",
+    "Despotar": "Despo-tar",
+    "Lugia": "Lu-gi-a",
+    "Ho-Oh": "Ho-Oh",
+    "Celebi": "Zele-bi",
+    "Geckarbor": "Geck-arbor",
+    "Reptain": "Repp-tein",
+    "Gewaldro": "Ge-waldro",
+    "Flemmli": "Flemmli",
+    "Jungglut": "Jung-glut",
+    "Lohgock": "Loh-gock",
+    "Hydropi": "Hü-dropi",
+    "Moorabbel": "Moor-abbel",
+    "Sumpex": "Summ-pex",
+    "Schwalbini": "Schwal-bini",
+    "Schwalboss": "Schwal-boss",
+    "Trasla": "Trass-la",
+    "Kirlia": "Kir-lia",
+    "Guardevoir": "Garde-woar",
+    "Bummelz": "Bummelz",
+    "Muntier": "Munn-tier",
+    "Letarking": "Letar-king",
+    "Zobiris": "Zobi-riss",
+    "Stollunior": "Stoll-unior",
+    "Stollrak": "Stoll-rack",
+    "Stolloss": "Stoll-oss",
+    "Voltenso": "Woll-tenso",
+    "Tohaido": "To-heido",
+    "Wailmer": "Weil-mer",
+    "Wailord": "Wei-lord",
+    "Camerupt": "Kame-rupt",
+    "Libelldra": "Libell-dra",
+    "Altaria": "Al-taria",
+    "Milotic": "Milo-tick",
+    "Absol": "Abb-soll",
+    "Kindwurm": "Kind-wurm",
+    "Draschel": "Dra-schel",
+    "Brutalanda": "Bruta-landa",
+    "Tanhel": "Tann-hell",
+    "Metang": "Me-tang",
+    "Metagross": "Meta-gross",
+    "Regirock": "Regi-rock",
+    "Regice": "Regi-eis",
+    "Registeel": "Regi-stiel",
+    "Latias": "La-ti-ass",
+    "Latios": "La-ti-oss",
+    "Kyogre": "Kai-ogre",
+    "Groudon": "Grau-donn",
+    "Rayquaza": "Rei-kwaza",
+    "Jirachi": "Dschi-ratschi",
+    "Deoxys": "De-oxis"
+  };
+
+  let customPhonetics = {};
+  try {
+    customPhonetics = JSON.parse(localStorage.getItem('pokedex_custom_phonetics') || '{}');
+  } catch (e) {}
+
+  function getSpokenPokemonName(rawName) {
+    const clean = rawName.replace('♀', ' weiblich').replace('♂', ' männlich');
+    if (customPhonetics[rawName]) return customPhonetics[rawName];
+    if (DEFAULT_PHONETICS[rawName]) return DEFAULT_PHONETICS[rawName];
+    return clean;
+  }
+
   const TYPE_INFO = {
     normal:   { de: 'Normal',   emoji: '⭐', color: '#A8A77A', strong: [], weak: ['fighting'], immune: ['ghost'], resist: [] },
     fire:     { de: 'Feuer',    emoji: '🔥', color: '#EE8130', strong: ['grass','ice','bug','steel'], weak: ['water','ground','rock'], immune: [], resist: ['fire','grass','ice','bug','steel','fairy'] },
@@ -755,8 +1023,7 @@
       evolvesFrom: item[4],
       chainId: item[5],
       image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${item[0]}.png`,
-      thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item[0]}.png`,
-      cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${item[0]}.ogg`
+      thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item[0]}.png`
     };
   }
 
@@ -810,8 +1077,7 @@
             evolvesFrom: sp.evolves_from_species_id || 0,
             chainId: sp.evolution_chain_id,
             image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${sp.id}.png`,
-            thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${sp.id}.png`,
-            cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${sp.id}.ogg`
+            thumb: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${sp.id}.png`
           };
         });
         localStorage.setItem('pokedex_gen123_v3', JSON.stringify(pokemonList));
@@ -881,7 +1147,6 @@
         if (quizMode) toggleQuizMode();
         selectPokemon(p.id, true);
       };
-      // Hier nutzen wir jetzt ebenfalls das hochauflösende Artwork als Miniatur, damit es 100% einheitlich ist!
       div.innerHTML = `<img src="${p.image}" alt="${p.name}" loading="lazy">`;
       strip.appendChild(div);
     });
@@ -957,7 +1222,6 @@
       const item = document.createElement('div');
       item.className = 'evo-item' + (member.id === p.id ? ' active' : '');
       item.onclick = () => selectPokemon(member.id, true);
-      // Auch in der Entwicklungskette nutzen wir das einheitliche Artwork
       item.innerHTML = `<img src="${member.image}" alt="${member.name}"><span>${member.name}</span>`;
       evoContainer.appendChild(item);
     });
@@ -969,8 +1233,7 @@
       activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
 
-    const explanation = buildExplanationText(p, 'all');
-    if (autoSpeak) speakText(explanation);
+    if (autoSpeak) speakText(buildExplanationText(p, 'all'));
   }
 
   function toggleQuizMode() {
@@ -1044,8 +1307,7 @@
       document.getElementById('poke-id').innerText = `#${String(correctPoke.id).padStart(3, '0')} • ${correctPoke.category}`;
       document.getElementById('poke-name').innerText = correctPoke.name;
 
-      const winText = `Richtig! Es ist ${correctPoke.name}!`;
-      speakText(winText);
+      speakText(`Richtig! Es ist ${getSpokenPokemonName(correctPoke.name)}!`);
 
       setTimeout(() => {
         if (quizMode && quizRevealed) startQuizRound();
@@ -1096,8 +1358,9 @@
     setSoundActiveUI(false);
   }
 
+  // Nutzt das Phonetik-Lexikon, damit Pokémon-Namen natürlich ausgesprochen werden
   function buildExplanationText(p, focus = 'all') {
-    const cleanName = p.name.replace('♀', ' weiblich').replace('♂', ' männlich');
+    const spokenName = getSpokenPokemonName(p.name);
     const typeNames = p.types.map(t => TYPE_INFO[t] ? TYPE_INFO[t].de : t);
     const { strong, weak } = getStrengthsAndWeaknesses(p.types);
     const strongNames = strong.map(t => TYPE_INFO[t].de);
@@ -1110,31 +1373,31 @@
       const typePart = typeNames.length === 1 ? `Typ: ${typeNames[0]}.` : `Typ: ${typeNames[0]} und ${typeNames[1]}.`;
       let evoPart = '';
       if (nextList.length === 1) {
-        evoPart = `Entwickelt sich zu ${nextList[0].name}.`;
+        evoPart = `Entwickelt sich zu ${getSpokenPokemonName(nextList[0].name)}.`;
       } else if (nextList.length > 1) {
-        evoPart = `Entwickelt sich zu: ${nextList.map(n => n.name).join(', ')}.`;
+        evoPart = `Entwickelt sich zu: ${nextList.map(n => getSpokenPokemonName(n.name)).join(', ')}.`;
       } else if (prev) {
-        evoPart = `Entwickelt aus ${prev.name}.`;
+        evoPart = `Entwickelt aus ${getSpokenPokemonName(prev.name)}.`;
       } else {
         evoPart = `Keine weitere Entwicklung.`;
       }
-      if (focus === 'type') return `${cleanName}. ${typePart}`;
-      if (focus === 'evo') return `${cleanName}. ${evoPart}`;
-      if (focus === 'strong') return strongNames.length ? `${cleanName}. Stark gegen: ${strongNames.join(', ')}.` : `${cleanName} hat keinen speziellen Typ-Vorteil.`;
-      if (focus === 'weak') return `${cleanName}. Vorsicht vor: ${weakNames.join(', ')}.`;
-      return `${cleanName}. ${p.category}. ${typePart} ${evoPart}`;
+      if (focus === 'type') return `${spokenName}. ${typePart}`;
+      if (focus === 'evo') return `${spokenName}. ${evoPart}`;
+      if (focus === 'strong') return strongNames.length ? `${spokenName}. Stark gegen: ${strongNames.join(', ')}.` : `${spokenName} hat keinen speziellen Typ-Vorteil.`;
+      if (focus === 'weak') return `${spokenName}. Vorsicht vor: ${weakNames.join(', ')}.`;
+      return `${spokenName}. ${p.category}. ${typePart} ${evoPart}`;
     } else {
       const typePart = typeNames.length === 1 ? `Es hat das Element ${typeNames[0]}.` : `Es verbindet ${typeNames[0]} und ${typeNames[1]}.`;
       let evoPart = '';
-      if (nextList.length === 1) evoPart = `Mit gutem Training wird es zu ${nextList[0].name}!`;
-      else if (nextList.length > 1) evoPart = `Es kann sich in ${nextList.map(n => n.name).join(' oder ')} entwickeln!`;
-      else if (prev) evoPart = `Es hat sich aus ${prev.name} entwickelt!`;
+      if (nextList.length === 1) evoPart = `Mit gutem Training wird es zu ${getSpokenPokemonName(nextList[0].name)}!`;
+      else if (nextList.length > 1) evoPart = `Es kann sich in ${nextList.map(n => getSpokenPokemonName(n.name)).join(' oder ')} entwickeln!`;
+      else if (prev) evoPart = `Es hat sich aus ${getSpokenPokemonName(prev.name)} entwickelt!`;
 
-      if (focus === 'type') return `Aha, ${cleanName}! ${typePart}`;
-      if (focus === 'evo') return evoPart || `${cleanName} entwickelt sich nicht weiter.`;
-      if (focus === 'strong') return strongNames.length ? `Im Kampf ist ${cleanName} super stark gegen ${strongNames.join(' und ')}!` : `${cleanName} kämpft mit normalen Attacken.`;
-      if (focus === 'weak') return `Pass gut auf vor ${weakNames.join(' und ')}, dagegen ist ${cleanName} empfindlich!`;
-      return `Schau mal, das ist ${cleanName}, ein ${p.category}! ${typePart} ${evoPart}`;
+      if (focus === 'type') return `Aha, ${spokenName}! ${typePart}`;
+      if (focus === 'evo') return evoPart || `${spokenName} entwickelt sich nicht weiter.`;
+      if (focus === 'strong') return strongNames.length ? `Im Kampf ist ${spokenName} super stark gegen ${strongNames.join(' und ')}!` : `${spokenName} kämpft mit normalen Attacken.`;
+      if (focus === 'weak') return `Pass gut auf vor ${weakNames.join(' und ')}, dagegen ist ${spokenName} empfindlich!`;
+      return `Schau mal, das ist ${spokenName}, ein ${p.category}! ${typePart} ${evoPart}`;
     }
   }
 
@@ -1318,11 +1581,9 @@
 
     if (matchedPokemon) {
       selectPokemon(matchedPokemon.id, false);
-      const txt = buildExplanationText(matchedPokemon, focus);
-      speakText(txt);
+      speakText(buildExplanationText(matchedPokemon, focus));
     } else if (focus !== 'all' && target) {
-      const txt = buildExplanationText(target, focus);
-      speakText(txt);
+      speakText(buildExplanationText(target, focus));
     } else {
       speakText('Sag mir einfach nochmal deutlich den Namen des Pokémon!');
     }
@@ -1341,12 +1602,32 @@
       select.appendChild(opt);
     });
   }
+
   function openSettings() {
     populateVoiceDropdown();
     document.getElementById('speed-slider').value = dexterSpeed;
     document.getElementById('pitch-slider').value = customPitch;
+
+    const p = pokemonList.find(x => x.id === currentId);
+    if (p) {
+      document.getElementById('phonetic-poke-name').innerText = p.name;
+      document.getElementById('custom-phonetic-input').value = customPhonetics[p.name] || DEFAULT_PHONETICS[p.name] || p.name;
+    }
+
     document.getElementById('settings-modal').style.display = 'flex';
   }
+
+  function saveCustomPhonetic() {
+    const p = pokemonList.find(x => x.id === currentId);
+    if (!p) return;
+    const val = document.getElementById('custom-phonetic-input').value.trim();
+    if (val) {
+      customPhonetics[p.name] = val;
+      localStorage.setItem('pokedex_custom_phonetics', JSON.stringify(customPhonetics));
+      speakFullInfo();
+    }
+  }
+
   function closeSettings() { document.getElementById('settings-modal').style.display = 'none'; }
   function updateSliders() {
     dexterSpeed = parseFloat(document.getElementById('speed-slider').value);
